@@ -40,7 +40,7 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: Unit test (tests/unit): DFT then inverse gives back the original points
   - acceptance: smoke.js: draw a stroke, check the number of circles is above 0 and the trace is running
 
-- [ ] `double-pendulum` - Double Pendulum Chaos: Start two pendulums a tiny 0.001° apart and watch them end up doing totally different things.
+- [x] `double-pendulum` - Double Pendulum Chaos: Start two pendulums a tiny 0.001° apart and watch them end up doing totally different things.
   - acceptance: Exact double-pendulum equations, RK4 integrator with a fixed time step (items/double-pendulum/physics.js)
   - acceptance: 2 to 10 pendulums, each started 0.001° apart, each its own colour, with fading trails
   - acceptance: Drag a bob to set the start angle (touch + mouse); sliders: count, lengths, masses, gravity; Play/Pause/Reset
