@@ -62,7 +62,7 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: Unit test (tests/unit): gradients match a numerical check, Adam reaches the bowl's bottom, a huge learning rate diverges
   - acceptance: smoke.js: drop a ball, check it moved downhill (loss went down)
 
-- [ ] `boids` - Boids Flocking: Hundreds of birds following just three simple rules. Watch a flock appear out of nothing.
+- [x] `boids` - Boids Flocking: Hundreds of birds following just three simple rules. Watch a flock appear out of nothing.
   - acceptance: Reynolds' three rules: separation, alignment, cohesion, each with a slider; plus vision radius and speed
   - acceptance: 50 to 600 boids; a spatial grid keeps it smooth; fewer boids by default on phones
   - acceptance: Tap/click to drop a predator the flock flees; drag to draw obstacles; Clear
