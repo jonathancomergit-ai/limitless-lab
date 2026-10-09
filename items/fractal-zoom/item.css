@@ -1,0 +1,153 @@
+/* ============================================================
+   Fractal Zoom - layout
+
+   The fractal is the hero. Under it: two readouts, zoom
+   buttons, Julia mode, the detail slider, then famous spots
+   and your bookmarks as rows of chips.
+   ============================================================ */
+
+.fz-stage {
+  cursor: grab;
+  height: clamp(300px, min(64svh, 118vw), 780px);
+}
+.fz-stage.is-dragging { cursor: grabbing; }
+.fz-stage.is-picking { cursor: crosshair; }
+.fz-stage:focus-visible { outline-offset: -3px; }
+
+/* Messages laid over the bottom of the stage. */
+.fz-limit,
+.fz-pick {
+  position: absolute;
+  left: .6rem;
+  right: .6rem;
+  bottom: .6rem;
+  margin: 0;
+  pointer-events: none;
+  background: rgba(7, 7, 12, .86);
+  border: 1px solid var(--amber);
+  border-radius: var(--radius-sm);
+  padding: .5rem .75rem;
+  font-size: .85rem;
+  line-height: 1.4;
+  color: var(--text);
+}
+.fz-limit strong { color: var(--amber); }
+.fz-pick {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  border-color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: .8rem;
+}
+
+.fz-controls {
+  display: grid;
+  gap: .85rem;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+/* ---- readouts --------------------------------------------- */
+.fz-stats { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.fz-stat {
+  display: grid;
+  gap: .1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .6rem .8rem .7rem;
+  min-width: 0;
+}
+.fz-stat-label,
+.fz-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.fz-stat-value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--text);
+  line-height: 1.2;
+}
+.fz-stat-note {
+  font-family: var(--font-mono);
+  font-size: .76rem;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+.fz-stat.is-limit { border-color: var(--amber); }
+.fz-stat.is-limit .fz-stat-value { color: var(--amber); }
+
+/* ---- buttons ---------------------------------------------- */
+.fz-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; }
+.fz-row .btn,
+.fz-julia,
+#mark { min-height: var(--tap); padding-inline: .4rem; min-width: 0; }
+.fz-julia[aria-pressed="false"] {
+  background: var(--surface-2);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---- slider ----------------------------------------------- */
+.fz-slider {
+  display: grid;
+  gap: .05rem;
+  font-size: .9rem;
+  color: var(--text-dim);
+  min-width: 0;
+}
+.fz-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.fz-slider output { font-family: var(--font-mono); color: var(--text); }
+.fz-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ---- chips (famous spots, bookmarks) ----------------------- */
+.fz-group { display: grid; gap: .4rem; min-width: 0; }
+.fz-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.fz-chips:empty::before {
+  content: "None yet. Find a spot you like and bookmark it.";
+  font-size: .88rem;
+  color: var(--text-faint);
+}
+.fz-chip {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  max-width: 100%;
+  min-width: 0;
+}
+.fz-chip .btn {
+  border: 0;
+  background: transparent;
+  min-height: var(--tap);
+  padding: .4rem .75rem;
+  font-size: .86rem;
+  min-width: 0;
+}
+.fz-chip .btn:hover { transform: none; background: var(--surface); }
+.fz-chip-go { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fz-chip-del { color: var(--text-dim); border-left: 1px solid var(--line-bright) !important; border-radius: 0; width: var(--tap); }
+
+.fz-try {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
