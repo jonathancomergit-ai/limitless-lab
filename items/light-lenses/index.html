@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Light &amp; Lenses - Limitless Lab</title>
+  <meta name="description" content="Drag lenses, mirrors and prisms around and watch light bend, focus and split into a rainbow.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Light &amp; Lenses</h1>
+  </header>
+
+  <main id="main">
+    <!-- ===================== THE STAGE (hero) ===================== -->
+    <div class="stage lo-stage" id="stage" tabindex="0" role="group"
+         aria-label="Optics bench. Drag a piece to move it, drag its round handle to turn it, tap it to see the angles. Keyboard: N picks the next piece, arrows move it, Q and E turn it.">
+      <canvas role="img" aria-label="Glass pieces and mirrors on a dark bench, with light rays bending, bouncing and splitting into colours."></canvas>
+    </div>
+
+    <!-- ===================== CONTROLS ===================== -->
+    <div class="lo-controls">
+      <div class="lo-readout" id="readout" aria-live="polite">
+        <p class="lo-sel" id="sel-name">Tap a piece to see what the light does there.</p>
+        <p class="lo-angles" id="sel-angles"></p>
+      </div>
+
+      <div class="lo-row lo-row-3" role="group" aria-label="Selected piece">
+        <button class="btn" id="rot-l" type="button" aria-label="Turn left">&#x27F2; Turn</button>
+        <button class="btn" id="rot-r" type="button" aria-label="Turn right">Turn &#x27F3;</button>
+        <button class="btn" id="remove" type="button">Remove</button>
+      </div>
+
+      <div class="lo-group">
+        <span class="lo-label" id="add-label">Add a piece</span>
+        <div class="lo-row lo-row-3" role="group" aria-labelledby="add-label">
+          <button class="btn" type="button" data-add="convex">Convex lens</button>
+          <button class="btn" type="button" data-add="concave">Concave lens</button>
+          <button class="btn" type="button" data-add="prism">Prism</button>
+          <button class="btn" type="button" data-add="mirror">Flat mirror</button>
+          <button class="btn" type="button" data-add="curved">Curved mirror</button>
+          <button class="btn" type="button" data-add="block">Glass block</button>
+        </div>
+      </div>
+
+      <div class="lo-group">
+        <span class="lo-label" id="light-label">Light</span>
+        <div class="lo-row lo-row-3 lo-seg" role="group" aria-labelledby="light-label">
+          <button class="btn" type="button" data-light="laser" aria-pressed="false">Red laser</button>
+          <button class="btn" type="button" data-light="white" aria-pressed="true">White laser</button>
+          <button class="btn" type="button" data-light="lamp" aria-pressed="false">Lamp beam</button>
+        </div>
+      </div>
+
+      <div class="lo-group">
+        <span class="lo-label" id="scene-label">Start with</span>
+        <div class="lo-row lo-row-4 lo-seg" role="group" aria-labelledby="scene-label">
+          <button class="btn" type="button" data-scene="rainbow">Rainbow</button>
+          <button class="btn" type="button" data-scene="focus">Lenses</button>
+          <button class="btn" type="button" data-scene="fibre">Trapped light</button>
+          <button class="btn" type="button" data-scene="mirrors">Mirrors</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Drag a lens, mirror or prism into the light. Drag the light too.</li>
+            <li>Drag the little round <strong>handle</strong> to turn a piece (or use the Turn buttons).</li>
+            <li>Tap a piece to see the angle the light goes in and comes out.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Pick a piece</td><td>Tap it</td><td><kbd>N</kbd> next (on the bench)</td></tr>
+              <tr><td>Move it</td><td>Drag it</td><td>Arrows (<kbd>Shift</kbd> = faster)</td></tr>
+              <tr><td>Turn it</td><td>Drag its handle, or Turn</td><td><kbd>Q</kbd> / <kbd>E</kbd> (<kbd>Shift</kbd> = finer)</td></tr>
+              <tr><td>Remove it</td><td>Remove button</td><td><kbd>Delete</kbd></td></tr>
+              <tr><td>Change the light</td><td>Light buttons</td><td><kbd>L</kbd></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>Light slows down in glass. When it hits glass at a slant, it <strong>bends</strong>. That's refraction (Snell's law).</li>
+            <li>A <strong>mirror</strong> bounces light off at the same angle it came in.</li>
+            <li>A <strong>convex lens</strong> bends parallel light to meet at one spot, the <strong>focal point</strong> (F). A concave lens spreads it out.</li>
+            <li>Glass bends violet light a bit more than red. So a <strong>prism</strong> fans white light out into a rainbow.</li>
+            <li>Going from glass into air at a steep angle, light can't get out at all. It bounces back inside: <strong>total internal reflection</strong>. Internet cables (optical fibres) work this way.</li>
+          </ul>
+          <p class="lo-try"><strong>Try this:</strong> load <strong>Lenses</strong> and drag the concave lens until the beam comes out parallel again. Where is it compared with the two F marks?</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>

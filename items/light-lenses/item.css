@@ -1,0 +1,65 @@
+/* ============================================================
+   Light & Lenses - layout
+
+   The bench is the hero. Under it: what the selected piece is
+   doing, Turn / Remove, add-a-piece, the light, scenes.
+   ============================================================ */
+
+.lo-stage {
+  cursor: grab;
+  height: clamp(320px, min(62svh, 140vw), 720px);
+  background: #05050A;
+}
+.lo-stage:focus-visible { outline-offset: -3px; }
+
+.lo-controls {
+  display: grid;
+  gap: .9rem;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+.lo-readout {
+  min-height: 3.4rem;
+  padding: .55rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+.lo-sel { margin: 0; font-weight: 600; color: var(--text); font-size: .95rem; }
+.lo-angles { margin: .15rem 0 0; font-family: var(--font-mono); font-size: .82rem; color: var(--amber); }
+.lo-angles:empty { display: none; }
+
+.lo-group { display: grid; gap: .35rem; min-width: 0; }
+.lo-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.lo-row { display: grid; gap: .4rem; }
+.lo-row-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.lo-row-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.lo-row .btn { min-height: var(--tap); padding-inline: .3rem; min-width: 0; font-size: .86rem; line-height: 1.15; }
+.lo-seg .btn[aria-pressed="true"] {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.lo-try {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+@media (min-width: 640px) {
+  .lo-row-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lo-row .btn { font-size: .9rem; }
+}
