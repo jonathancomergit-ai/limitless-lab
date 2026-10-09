@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "neural-playground",
+    "title": "Neural Net Playground",
+    "blurb": "Drop red and blue dots and watch a tiny neural network learn to tell them apart, live.",
+    "tags": [
+      "machine learning",
+      "neural nets"
+    ],
+    "added": "2026-10-09",
+    "soon": true
+  },
+  {
+    "slug": "fourier-draw",
+    "title": "Fourier Draw",
+    "blurb": "Draw any shape with your finger, then watch spinning circles redraw it. That's a Fourier series.",
+    "tags": [
+      "maths",
+      "signals"
+    ],
+    "added": "2026-10-09",
+    "soon": true
+  },
+  {
+    "slug": "double-pendulum",
+    "title": "Double Pendulum Chaos",
+    "blurb": "Start two pendulums a tiny 0.001° apart and watch them end up doing totally different things.",
+    "tags": [
+      "physics",
+      "chaos"
+    ],
+    "added": "2026-10-09",
+    "soon": true
+  }
+]
