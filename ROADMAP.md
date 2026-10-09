@@ -71,7 +71,7 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: Unit test (tests/unit): each rule gives the expected direction on small hand-made setups
   - acceptance: smoke.js: let it run, change a slider, check the boids moved and the setting applied
 
-- [ ] `gravity-sandbox` - Gravity Sandbox: Fling planets and stars around and watch them orbit, slingshot and crash. Real Newtonian gravity.
+- [x] `gravity-sandbox` - Gravity Sandbox: Fling planets and stars around and watch them orbit, slingshot and crash. Real Newtonian gravity.
   - acceptance: Drag to throw a new body (drag length = speed); pick its size
   - acceptance: Presets: sun and planets, binary stars, the figure-8 three-body orbit, a planet with moons
   - acceptance: A symplectic integrator (velocity Verlet / leapfrog) so orbits stay stable; collisions merge bodies and keep momentum
