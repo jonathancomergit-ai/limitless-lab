@@ -18,7 +18,7 @@ What to build next, in order. **Take the top unticked line.**
 
 Tonight's three for 🔬 Lab, in this order.
 
-- [ ] `neural-playground` - Neural Net Playground: Drop red and blue dots and watch a tiny neural network learn to tell them apart, live.
+- [x] `neural-playground` - Neural Net Playground: Drop red and blue dots and watch a tiny neural network learn to tell them apart, live.
   - acceptance: Tap/click the plot to add a dot; a toggle picks red or blue; presets: two blobs, circle, XOR, spiral; Clear
   - acceptance: A small neural network written in plain JS in items/neural-playground/net.js (no libraries): 1-3 hidden layers, 1-8 neurons each, tanh/ReLU/sigmoid, learning rate slider
   - acceptance: Play / Pause / Step / Reset; shows epoch and loss, with a small loss chart
