@@ -81,7 +81,7 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: Unit test (tests/unit): a circular orbit keeps its radius within 1% over 10 orbits; a merge conserves momentum
   - acceptance: smoke.js: throw a body, check the body count went up and time advanced
 
-- [ ] `ripple-tank` - Ripple Tank: Tap the water to make waves. Build walls and slits and watch the waves interfere, just like light.
+- [x] `ripple-tank` - Ripple Tank: Tap the water to make waves. Build walls and slits and watch the waves interfere, just like light.
   - acceptance: 2D wave equation on a grid (finite differences) with gentle damping, drawn as a colour map
   - acceptance: Tap = a drop; drag = draw walls; tools: drop, wall, eraser
   - acceptance: Presets: single drop, two sources (interference), double slit, a wall with a gap
