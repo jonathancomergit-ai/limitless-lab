@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Fractal Zoom - Limitless Lab</title>
+  <meta name="description" content="Dive into the Mandelbrot set. Zoom forever into shapes that never repeat, then jump to matching Julia sets.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Fractal Zoom</h1>
+  </header>
+
+  <main id="main">
+    <!-- ===================== THE STAGE (hero) ===================== -->
+    <div class="stage fz-stage" id="stage" tabindex="0" role="group"
+         aria-label="Fractal. Pinch or scroll to zoom, drag to pan, double-tap to zoom in. Keyboard: arrows pan, plus and minus zoom, J for the Julia set of the centre.">
+      <canvas role="img" aria-label="The Mandelbrot set: a dark beetle-shaped blob with glowing, endlessly detailed edges."></canvas>
+      <div class="hud">
+        <div>Zoom <output id="zoom-hud">×1.0</output></div>
+        <div><output id="mode-hud">Mandelbrot</output></div>
+      </div>
+      <p class="fz-limit" id="limit" hidden>
+        <strong>Precision limit reached.</strong>
+        Past about 10<sup>13</sup>× the computer's numbers run out of digits, so pixels start to repeat and it goes blocky.
+      </p>
+      <p class="fz-pick" id="pick-msg" hidden>Tap a spot to see its Julia set</p>
+    </div>
+
+    <!-- ===================== CONTROLS ===================== -->
+    <div class="fz-controls">
+      <div class="fz-stats">
+        <div class="fz-stat">
+          <span class="fz-stat-label">Zoom</span>
+          <output id="zoom" class="fz-stat-value">×1.0</output>
+          <span class="fz-stat-note" id="digits">width 3.4</span>
+        </div>
+        <div class="fz-stat">
+          <span class="fz-stat-label">Iterations</span>
+          <output id="iters" class="fz-stat-value">250</output>
+          <span class="fz-stat-note" id="render-note">drawing…</span>
+        </div>
+      </div>
+
+      <div class="fz-row" role="group" aria-label="Zoom">
+        <button class="btn" id="zoom-in" type="button" aria-label="Zoom in">+ Zoom in</button>
+        <button class="btn" id="zoom-out" type="button" aria-label="Zoom out">&minus; Zoom out</button>
+        <button class="btn" id="reset" type="button">Reset</button>
+      </div>
+
+      <button class="btn btn-primary fz-julia" id="julia" type="button" aria-pressed="false">Julia mode</button>
+
+      <label class="fz-slider">
+        <span>Detail (iterations at ×1) <output id="base-out">250</output></span>
+        <input type="range" id="base" min="100" max="2000" step="50" value="250">
+      </label>
+
+      <div class="fz-group">
+        <span class="fz-label" id="famous-label">Famous spots</span>
+        <div class="fz-chips" role="group" aria-labelledby="famous-label" id="famous"></div>
+      </div>
+
+      <div class="fz-group">
+        <span class="fz-label" id="marks-label">Your bookmarks</span>
+        <div class="fz-chips" role="group" aria-labelledby="marks-label" id="marks"></div>
+        <button class="btn" id="mark" type="button">&#9733; Bookmark this spot</button>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Pinch, scroll or double-tap on a glowing edge to dive in.</li>
+            <li>Keep going. The detail never runs out.</li>
+            <li>Turn on <strong>Julia mode</strong> and tap a spot to see its Julia set.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Zoom in</td><td>Pinch out, or double-tap</td><td><kbd>+</kbd> (or mouse wheel)</td></tr>
+              <tr><td>Zoom out</td><td>Pinch in</td><td><kbd>-</kbd></td></tr>
+              <tr><td>Move around</td><td>Drag</td><td>Arrows (on the stage)</td></tr>
+              <tr><td>Julia set</td><td>Julia mode, then tap</td><td><kbd>J</kbd> (uses the centre)</td></tr>
+              <tr><td>Bookmark</td><td>Bookmark button</td><td><kbd>B</kbd></td></tr>
+              <tr><td>Start again</td><td>Reset</td><td><kbd>0</kbd></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>Every pixel is a number. The computer takes it, <strong>squares it and adds the start number back</strong>, again and again.</li>
+            <li>If the answer stays small forever, the pixel is <strong>in the set</strong>: it's painted dark.</li>
+            <li>If the answer shoots off to infinity, the colour shows <strong>how fast</strong> it escaped.</li>
+            <li>That one tiny rule makes a shape whose edge has <strong>endless detail</strong>. Zoom in anywhere on the edge and you'll find new spirals, and even tiny copies of the whole set.</li>
+            <li>A <strong>Julia set</strong> uses the same rule, but keeps one number fixed. Each spot on the Mandelbrot set has its own Julia set. Spots inside give solid shapes; spots outside give dust.</li>
+            <li>The computer only keeps about 16 digits. At about 10<sup>13</sup>× zoom it runs out, and the picture goes blocky.</li>
+          </ul>
+          <p class="fz-try"><strong>Try this:</strong> find a tiny copy of the whole Mandelbrot set hiding somewhere along the edge. Hint: follow the long spike on the left. Bookmark it when you do!</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>

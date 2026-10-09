@@ -90,7 +90,7 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: Unit test (tests/unit): the time step respects the stability limit (no blow-up over many steps), and a centred drop stays symmetric
   - acceptance: smoke.js: tap the water, check the wave grid changed
 
-- [ ] `fractal-zoom` - Fractal Zoom: Dive into the Mandelbrot set. Zoom forever into shapes that never repeat, then jump to matching Julia sets.
+- [x] `fractal-zoom` - Fractal Zoom: Dive into the Mandelbrot set. Zoom forever into shapes that never repeat, then jump to matching Julia sets.
   - acceptance: Mandelbrot with smooth colouring from the palette CSS variables
   - acceptance: Pinch / scroll to zoom, drag to pan, double-tap to zoom in; keyboard: arrows pan, +/- zoom
   - acceptance: Rendered in Web Workers in tiles, coarse first then sharp, so it never freezes
