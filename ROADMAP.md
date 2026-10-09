@@ -104,7 +104,7 @@ Tonight's three for 🔬 Lab, in this order.
 
 Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bullets, plain words) and one "Try this" challenge.
 
-- [ ] `life-lab` - Life Lab: Draw some cells, hit play and watch patterns grow, crawl and explode. Then invent your own rules.
+- [x] `life-lab` - Life Lab: Draw some cells, hit play and watch patterns grow, crawl and explode. Then invent your own rules.
   - acceptance: Conway's Game of Life on a wrapping grid; tap/drag to draw cells (touch + mouse), erase mode; Play / Pause / Step / Clear / Random
   - acceptance: Speed slider; grid size scales to the screen; generation and population counters
   - acceptance: Presets: glider, glider gun, pulsar, R-pentomino, spaceship

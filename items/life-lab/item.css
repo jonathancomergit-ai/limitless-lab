@@ -1,0 +1,122 @@
+/* ============================================================
+   Life Lab - layout
+
+   The board is the hero. Under it: Play / Step / Random /
+   Clear, draw or erase, speed, patterns, then the rule editor.
+   ============================================================ */
+
+.ll-stage {
+  cursor: crosshair;
+  height: clamp(300px, min(60svh, 120vw), 720px);
+}
+.ll-stage:focus-visible { outline-offset: -3px; }
+
+.ll-controls {
+  display: grid;
+  gap: .9rem;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+.ll-group { display: grid; gap: .35rem; min-width: 0; }
+.ll-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.ll-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; }
+.ll-seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+.ll-row .btn,
+.ll-seg .btn,
+.ll-presets .btn { min-height: var(--tap); padding-inline: .3rem; min-width: 0; font-size: .9rem; }
+.ll-seg .btn[aria-pressed="true"] {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.ll-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
+.ll-presets .btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.ll-rule-presets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* ---- slider ----------------------------------------------- */
+.ll-slider { display: grid; gap: .05rem; font-size: .9rem; color: var(--text-dim); min-width: 0; }
+.ll-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.ll-slider output { font-family: var(--font-mono); color: var(--text); }
+.ll-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ---- rule editor ------------------------------------------ */
+.ll-rules {
+  margin: 0;
+  padding: .8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  display: grid;
+  gap: .6rem;
+  min-width: 0;
+}
+.ll-rules legend {
+  padding: 0 .4rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.ll-rule {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  margin-left: .4rem;
+}
+.ll-hint { margin: 0; color: var(--text-dim); font-size: .88rem; }
+.ll-rule-row { display: grid; gap: .25rem; min-width: 0; }
+.ll-rule-name { font-size: .9rem; color: var(--text); }
+.ll-rule-name small { color: var(--text-dim); font-size: .8rem; }
+
+.ll-boxes { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: .25rem; }
+.ll-box { position: relative; display: block; min-width: 0; }
+.ll-box input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.ll-box span {
+  display: grid;
+  place-items: center;
+  min-height: var(--tap);
+  border: 1px solid var(--line-field);
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.ll-box input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.ll-box input:focus-visible + span { outline: 3px solid var(--text); outline-offset: 2px; }
+
+.ll-try {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+@media (min-width: 640px) {
+  .ll-presets { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .ll-rule-presets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ll-boxes { gap: .4rem; }
+}
