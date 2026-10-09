@@ -156,7 +156,7 @@ Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bu
   - acceptance: Unit test (tests/unit): finds the obvious 3 groups on 3 far-apart blobs, total distance never goes up between steps
   - acceptance: smoke.js: load a preset, press Play, check the step count went up
 
-- [ ] `sorting-race` - Sorting Race: Bubble, insertion, merge and quick sort race on the same bars, with sound.
+- [x] `sorting-race` - Sorting Race: Bubble, insertion, merge and quick sort race on the same bars, with sound.
   - acceptance: 2-4 lanes of bars, same shuffled start; algorithms: bubble, insertion, selection, merge, quick, heap
   - acceptance: Each lane shows compares and swaps live; highlight the bars being compared
   - acceptance: Sound on/off (pitch follows bar height, via Web Audio, off by default)

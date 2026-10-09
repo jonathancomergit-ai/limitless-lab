@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Sorting Race - Limitless Lab</title>
+  <meta name="description" content="Bubble, insertion, merge and quick sort race on the same bars, with sound. See why some code is way faster.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Sorting Race</h1>
+  </header>
+
+  <main id="main">
+    <!-- ===================== THE STAGE (hero) ===================== -->
+    <div class="stage sr-stage" id="stage" tabindex="0" role="group" aria-label="Race track. One lane of bars per sorting algorithm.">
+      <canvas role="img" aria-label="Lanes of bars of different heights. Each lane sorts the same bars with a different algorithm. The bars being compared light up."></canvas>
+    </div>
+
+    <!-- ===================== CONTROLS ===================== -->
+    <div class="sr-controls">
+      <div class="sr-row" role="group" aria-label="Race">
+        <button class="btn btn-primary" id="run" type="button">Race!</button>
+        <button class="btn" id="shuffle" type="button">New bars</button>
+        <button class="btn" id="sound" type="button" aria-pressed="false">Sound: off</button>
+      </div>
+
+      <ol class="sr-scores" id="scores" aria-label="Scores"></ol>
+
+      <div class="sr-group">
+        <span class="sr-label" id="count-label">Lanes</span>
+        <div class="sr-seg sr-seg-3" role="group" aria-labelledby="count-label">
+          <button class="btn" type="button" data-count="2" aria-pressed="false">2</button>
+          <button class="btn" type="button" data-count="3" aria-pressed="false">3</button>
+          <button class="btn" type="button" data-count="4" aria-pressed="true">4</button>
+        </div>
+        <div class="sr-picks">
+          <label class="sr-pick" data-lane="0"><span>Lane 1</span><select id="lane0"></select></label>
+          <label class="sr-pick" data-lane="1"><span>Lane 2</span><select id="lane1"></select></label>
+          <label class="sr-pick" data-lane="2"><span>Lane 3</span><select id="lane2"></select></label>
+          <label class="sr-pick" data-lane="3"><span>Lane 4</span><select id="lane3"></select></label>
+        </div>
+      </div>
+
+      <div class="sr-group">
+        <span class="sr-label" id="order-label">Starting order</span>
+        <div class="sr-seg sr-seg-4" role="group" aria-labelledby="order-label">
+          <button class="btn" type="button" data-order="random" aria-pressed="true">Random</button>
+          <button class="btn" type="button" data-order="nearly" aria-pressed="false">Nearly sorted</button>
+          <button class="btn" type="button" data-order="reversed" aria-pressed="false">Reversed</button>
+          <button class="btn" type="button" data-order="few" aria-pressed="false">Few unique</button>
+        </div>
+      </div>
+
+      <label class="sr-slider">
+        <span>Bars <output id="n-out">40</output></span>
+        <input type="range" id="n" min="10" max="120" step="5" value="40">
+      </label>
+      <label class="sr-slider">
+        <span>Speed <output id="speed-out">120 moves/s</output></span>
+        <input type="range" id="speed" min="1" max="8" step="1" value="4">
+      </label>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Pick 2 to 4 sorts for the lanes. They all get the <strong>same bars</strong>.</li>
+            <li>Press <strong>Race!</strong>. Every lane makes the same number of moves per second.</li>
+            <li>Turn the sound on and listen: you can <em>hear</em> each one work.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Race / Pause</td><td>Race! button</td><td><kbd>R</kbd></td></tr>
+              <tr><td>New bars</td><td>New bars</td><td><kbd>N</kbd></td></tr>
+              <tr><td>Sound on / off</td><td>Sound button</td><td><kbd>M</kbd></td></tr>
+              <tr><td>Number of lanes</td><td>2 / 3 / 4</td><td><kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd></td></tr>
+              <tr><td>Sorts, order, bars, speed</td><td>Menus, buttons, sliders</td><td><kbd>Tab</kbd> to them</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>A computer sorts by <strong>comparing</strong> two things and maybe <strong>swapping</strong> them. That's all it can do.</li>
+            <li><strong>Bubble</strong>, <strong>insertion</strong> and <strong>selection</strong> sort compare almost every pair. Double the bars and they get about <strong>4 times</strong> slower.</li>
+            <li><strong>Merge</strong>, <strong>quick</strong> and <strong>heap</strong> sort split the job up. Double the bars and they get only a bit over <strong>2 times</strong> slower.</li>
+            <li>The start matters: insertion sort flies through <strong>nearly sorted</strong> bars, but crawls on <strong>reversed</strong> ones.</li>
+            <li>The sound's pitch follows the height of the bar being looked at.</li>
+          </ul>
+          <p class="sr-try"><strong>Try this:</strong> race bubble against merge with 20 bars, then with 120. How much bigger does the gap get? Then try insertion sort on "Nearly sorted".</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>
