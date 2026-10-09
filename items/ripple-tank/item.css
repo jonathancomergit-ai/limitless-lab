@@ -1,0 +1,88 @@
+/* ============================================================
+   Ripple Tank - layout
+
+   The tank is the hero. Under it: tools, presets, the
+   frequency slider, then Pause / Calm / Clear.
+   ============================================================ */
+
+.rt-stage {
+  cursor: crosshair;
+  height: clamp(300px, min(62svh, 112vw), 760px);
+}
+.rt-stage:focus-visible { outline-offset: -3px; }
+
+.rt-controls {
+  display: grid;
+  gap: .9rem;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+.rt-group { display: grid; gap: .35rem; min-width: 0; }
+.rt-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* ---- tools: one segmented row ----------------------------- */
+.rt-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
+.rt-seg .btn,
+.rt-presets .btn,
+.rt-row .btn { min-height: var(--tap); padding-inline: .4rem; min-width: 0; }
+.rt-seg .btn[aria-pressed="true"] {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.rt-key {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text-faint);
+  border: 1px solid var(--line-bright);
+  border-radius: 4px;
+  padding: 0 .3rem;
+  line-height: 1.4;
+}
+
+/* ---- presets: 2 x 2 on a phone, 4 across when wide -------- */
+.rt-presets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+.rt-presets .btn { font-size: .88rem; }
+.rt-presets .btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+
+/* ---- slider ----------------------------------------------- */
+.rt-slider {
+  display: grid;
+  gap: .05rem;
+  font-size: .9rem;
+  color: var(--text-dim);
+  min-width: 0;
+}
+.rt-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.rt-slider output { font-family: var(--font-mono); color: var(--text); }
+.rt-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ---- playback --------------------------------------------- */
+.rt-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; }
+
+.rt-try {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+@media (min-width: 640px) {
+  .rt-presets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
