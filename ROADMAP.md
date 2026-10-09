@@ -53,7 +53,7 @@ Tonight's three for 🔬 Lab, in this order.
 
 ### Batch 2
 
-- [ ] `gradient-descent` - Gradient Descent Hill: Drop a ball on a hilly landscape and watch it roll to the bottom. It's how AI learns, one small step at a time.
+- [x] `gradient-descent` - Gradient Descent Hill: Drop a ball on a hilly landscape and watch it roll to the bottom. It's how AI learns, one small step at a time.
   - acceptance: A 2D landscape drawn as a contour heatmap; presets: bowl, long valley (Rosenbrock), bumpy (many dips), saddle
   - acceptance: Tap to drop a ball; race optimisers side by side: plain gradient descent, momentum and Adam, each its own colour with a trail
   - acceptance: Learning-rate slider (log scale) that shows overshooting and blowing up when too big

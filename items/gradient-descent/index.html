@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Gradient Descent Hill - Limitless Lab</title>
+  <meta name="description" content="Drop a ball on a hilly landscape and watch it roll to the bottom. It's how AI learns, one small step at a time.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Gradient Descent Hill</h1>
+  </header>
+
+  <main id="main">
+    <div class="gd-layout">
+      <!-- ===================== THE LANDSCAPE (hero) ===================== -->
+      <div class="stage gd-stage" id="stage" tabindex="0" role="group"
+           aria-label="Landscape. Tap to drop the balls there. Keyboard: arrow keys move the cursor, Enter drops the balls.">
+        <canvas role="img" aria-label="A top-down map of a hilly landscape: darker is lower, the lines join points of equal height. Coloured balls roll downhill, leaving trails."></canvas>
+        <div class="hud">
+          <div>Step <output id="steps">0</output></div>
+          <div>Rate <output id="lr-hud">0.1</output></div>
+        </div>
+        <p class="stage-msg" id="msg" hidden>Tap to drop the balls</p>
+      </div>
+
+      <!-- ===================== CONTROLS ===================== -->
+      <div class="gd-side">
+        <div class="gd-group gd-run" role="group" aria-label="Race">
+          <button class="btn btn-primary" id="play" type="button" aria-pressed="false">Play</button>
+          <button class="btn" id="step" type="button">Step</button>
+          <button class="btn" id="reset" type="button">Restart</button>
+        </div>
+
+        <div class="gd-group gd-presets" role="group" aria-label="Landscape">
+          <button class="chip" type="button" data-hill="bowl" aria-pressed="false">Bowl</button>
+          <button class="chip" type="button" data-hill="valley" aria-pressed="false">Valley</button>
+          <button class="chip" type="button" data-hill="bumpy" aria-pressed="false">Bumpy</button>
+          <button class="chip" type="button" data-hill="saddle" aria-pressed="false">Saddle</button>
+        </div>
+
+        <div class="gd-racers" role="group" aria-label="Racers: tap to switch one on or off">
+          <button class="gd-racer is-gd" type="button" data-racer="gd" aria-pressed="true">
+            <span class="gd-racer-name">Plain GD</span>
+            <output class="gd-racer-loss" id="loss-gd">-</output>
+            <span class="gd-racer-note" id="note-gd">rolling</span>
+          </button>
+          <button class="gd-racer is-momentum" type="button" data-racer="momentum" aria-pressed="true">
+            <span class="gd-racer-name">Momentum</span>
+            <output class="gd-racer-loss" id="loss-momentum">-</output>
+            <span class="gd-racer-note" id="note-momentum">rolling</span>
+          </button>
+          <button class="gd-racer is-adam" type="button" data-racer="adam" aria-pressed="true">
+            <span class="gd-racer-name">Adam</span>
+            <output class="gd-racer-loss" id="loss-adam">-</output>
+            <span class="gd-racer-note" id="note-adam">rolling</span>
+          </button>
+        </div>
+
+        <figure class="gd-card">
+          <figcaption>Loss (height) over steps <span class="gd-axis">log scale</span></figcaption>
+          <div class="gd-chart" id="chart-box">
+            <canvas role="img" aria-label="A line chart of each ball's height (the loss) at every step. Going down means it's learning."></canvas>
+          </div>
+        </figure>
+
+        <div class="gd-sliders">
+          <label class="gd-slider">
+            <span>Learning rate <output id="lr-out">0.1</output></span>
+            <input type="range" id="lr" min="-3" max="0.5" step="0.05" value="-1">
+          </label>
+          <label class="gd-slider">
+            <span>Speed <output id="speed-out">30 steps/s</output></span>
+            <input type="range" id="speed" min="0" max="4" step="1" value="2">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Pick a landscape: <strong>Bowl</strong>, <strong>Valley</strong>, <strong>Bumpy</strong> or <strong>Saddle</strong>.</li>
+            <li>Tap anywhere on the map to drop three balls there. They race to the bottom.</li>
+            <li>Slide the <strong>learning rate</strong> up until something blows up.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Drop the balls</td><td>Tap or drag the map</td><td>Arrows, then <kbd>Enter</kbd> (on the map)</td></tr>
+              <tr><td>Play / Pause</td><td>Play</td><td><kbd>P</kbd></td></tr>
+              <tr><td>One step</td><td>Step</td><td><kbd>N</kbd></td></tr>
+              <tr><td>Race again</td><td>Restart</td><td><kbd>R</kbd></td></tr>
+              <tr><td>Learning rate</td><td>Slider</td><td><kbd>[</kbd> <kbd>]</kbd></td></tr>
+              <tr><td>Landscape</td><td>Bowl / Valley / Bumpy / Saddle</td><td><kbd>1</kbd> to <kbd>4</kbd></td></tr>
+              <tr><td>Racer on / off</td><td>Tap its card</td><td>Tab to it, <kbd>Enter</kbd></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>The map is a <strong>landscape seen from above</strong>. Dark = low, light = high. Each line joins spots of the same height.</li>
+            <li>A ball can't see the whole map. It only feels the <strong>slope</strong> right under it, then takes a step downhill. Then again.</li>
+            <li>The <strong>learning rate</strong> is the size of each step. Too small: it crawls. Too big: it jumps over the bottom, and can bounce out for ever.</li>
+            <li><strong class="gd-k-gd">Plain GD</strong> just steps downhill. <strong class="gd-k-momentum">Momentum</strong> is a heavy ball that keeps its speed. <strong class="gd-k-adam">Adam</strong> takes about the same size step in every direction.</li>
+            <li>Training an AI is the same game, in millions of directions at once. The height is the <strong>loss</strong>: how wrong the AI is.</li>
+            <li>Want to see it for real? The <a href="../neural-playground/">Neural Net Playground</a> runs this exact trick to teach a tiny network.</li>
+          </ul>
+          <p class="gd-try"><strong>Try this:</strong> pick <strong>Bumpy</strong>. Can you find a learning rate where Plain GD gets stuck in a little dip, but Momentum rolls through to the real bottom in the middle?</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>
