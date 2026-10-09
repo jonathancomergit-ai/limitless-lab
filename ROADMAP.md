@@ -100,6 +100,73 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: "What's happening?" panel + one "Try this" challenge
   - acceptance: Unit test (tests/unit): known points inside / outside the set, and the smooth escape value
   - acceptance: smoke.js: zoom in, check the zoom level changed and the canvas re-rendered
+### Batch 3
+
+Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bullets, plain words) and one "Try this" challenge.
+
+- [ ] `life-lab` - Life Lab: Draw some cells, hit play and watch patterns grow, crawl and explode. Then invent your own rules.
+  - acceptance: Conway's Game of Life on a wrapping grid; tap/drag to draw cells (touch + mouse), erase mode; Play / Pause / Step / Clear / Random
+  - acceptance: Speed slider; grid size scales to the screen; generation and population counters
+  - acceptance: Presets: glider, glider gun, pulsar, R-pentomino, spaceship
+  - acceptance: Rule editor: birth/survive checkboxes (B3/S23 notation shown), with presets HighLife, Seeds, Day & Night
+  - acceptance: Pure rules in items/life-lab/life.js (step function, rule parser)
+  - acceptance: Saves the board and rules; Export/Import works
+  - acceptance: Reduced motion: slow default speed
+  - acceptance: Unit test (tests/unit): a blinker flips back after 2 steps, a glider moves 1 cell diagonally after 4, the rule parser reads "B36/S23"
+  - acceptance: smoke.js: draw cells, press Step, check the generation went up
+
+- [ ] `pathfinding` - Pathfinding Race: Draw walls and watch A*, Dijkstra and breadth-first search race to the goal.
+  - acceptance: A grid; drag to draw/erase walls (touch + mouse); drag the start and goal markers
+  - acceptance: Run A*, Dijkstra, BFS and greedy best-first side by side (or one at a time), each showing the cells it explored and its final path
+  - acceptance: Readout per algorithm: cells explored, path length, time steps
+  - acceptance: Presets: empty, maze (generated), spiral, "trap" (where greedy fails); optional "mud" cells that cost more
+  - acceptance: Pure algorithms in items/pathfinding/search.js
+  - acceptance: Saves the grid; Export/Import works
+  - acceptance: Unit test (tests/unit): every algorithm finds a path when one exists and reports none when walled off; A* and Dijkstra find the same shortest length
+  - acceptance: smoke.js: draw a wall, press Run, check a path length is shown
+
+- [ ] `epidemic` - Epidemic Sim: Dots wander, meet and pass on a germ. Slide masks, vaccines and distancing and watch the curve flatten.
+  - acceptance: 100-1000 dots move around; colours for healthy, sick, recovered, vaccinated; tap to infect a dot
+  - acceptance: Sliders: infection chance, days sick, % vaccinated, % masked, distancing (fewer moving dots)
+  - acceptance: Live stacked chart of healthy / sick / recovered over time, with the peak marked
+  - acceptance: A "compare" button that overlays the last run's curve, to see flattening
+  - acceptance: Pure model in items/epidemic/model.js with a seeded random generator
+  - acceptance: Saves settings; Export/Import works
+  - acceptance: Reduced motion: dots shown as a still grid, chart only
+  - acceptance: Unit test (tests/unit): with 0% infection chance nobody else gets sick; same seed gives the same run; totals always add up
+  - acceptance: smoke.js: start a run, check the sick count changed
+
+- [ ] `light-lenses` - Light & Lenses: Drag lenses, mirrors and prisms around and watch light bend, focus and split into a rainbow.
+  - acceptance: A light source (laser or lamp) and draggable, rotatable pieces: convex lens, concave lens, flat mirror, curved mirror, prism, glass block
+  - acceptance: Ray tracing with Snell's law and reflection; total internal reflection shows up in the glass block
+  - acceptance: White light through a prism splits into colours (refractive index changes with wavelength)
+  - acceptance: Readout: angle in / angle out when you tap a surface; focal point marked for lenses
+  - acceptance: Pure optics in items/light-lenses/optics.js
+  - acceptance: Saves the layout; Export/Import works
+  - acceptance: Unit test (tests/unit): Snell's law angles match known values, total internal reflection past the critical angle, a mirror reflects at equal angles
+  - acceptance: smoke.js: drag a lens, check the ray path changed
+
+- [ ] `k-means` - k-Means Clustering: Tap to drop dots and watch a computer sort them into groups by itself.
+  - acceptance: Tap/drag to drop dots (touch + mouse); presets: 3 blobs, 5 blobs, smiley, uneven sizes
+  - acceptance: Slider for k (2-8); Step shows the two moves (assign, then move the centres) one at a time; Play runs to the end
+  - acceptance: Each group coloured, centres drawn as big markers with a trail of where they moved; the Voronoi regions shaded softly
+  - acceptance: "Elbow" chart: total distance for k = 1..8, to show how to pick k
+  - acceptance: Pure algorithm in items/k-means/kmeans.js with a seeded random start
+  - acceptance: Saves dots and settings; Export/Import works
+  - acceptance: Unit test (tests/unit): finds the obvious 3 groups on 3 far-apart blobs, total distance never goes up between steps
+  - acceptance: smoke.js: load a preset, press Play, check the step count went up
+
+- [ ] `sorting-race` - Sorting Race: Bubble, insertion, merge and quick sort race on the same bars, with sound.
+  - acceptance: 2-4 lanes of bars, same shuffled start; algorithms: bubble, insertion, selection, merge, quick, heap
+  - acceptance: Each lane shows compares and swaps live; highlight the bars being compared
+  - acceptance: Sound on/off (pitch follows bar height, via Web Audio, off by default)
+  - acceptance: Starting order presets: random, nearly sorted, reversed, few unique
+  - acceptance: Pure algorithms in items/sorting-race/sorts.js as step generators
+  - acceptance: Saves settings; Export/Import works
+  - acceptance: Reduced motion: no flashing highlights
+  - acceptance: Unit test (tests/unit): every algorithm sorts random, sorted, reversed and duplicate arrays correctly
+  - acceptance: smoke.js: press Race, check the compare counter went up
+
 ## Ideas (not ready yet)
 
 - (add more here)
