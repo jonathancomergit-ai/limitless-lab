@@ -1,0 +1,152 @@
+/* ============================================================
+   Gradient Descent Hill - layout
+
+   Phone: the square map fills the width, controls stack under it.
+   Wide screens: map on the left, controls in a column on the right.
+
+   Racer colours: Plain GD = hot pink, Momentum = amber, Adam = cyan.
+   ============================================================ */
+
+.gd-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.gd-stage {
+  height: auto;
+  aspect-ratio: 1 / 1;
+  cursor: crosshair;
+}
+.gd-stage:focus-visible { outline-offset: -3px; }
+
+.gd-side {
+  display: grid;
+  gap: .85rem;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+  min-width: 0;
+}
+
+/* ---- button rows ------------------------------------------ */
+.gd-group { display: grid; gap: .5rem; min-width: 0; }
+.gd-run     { grid-template-columns: 1.4fr 1fr 1fr; }
+.gd-presets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.gd-side .btn,
+.gd-side .chip {
+  min-height: var(--tap);
+  padding-inline: .4rem;
+  min-width: 0;
+}
+.gd-side .chip { font-size: .72rem; letter-spacing: .04em; }
+
+/* ---- the three racers: toggle cards with live loss -------- */
+.gd-racers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+.gd-racer {
+  --c: var(--hot);
+  display: grid;
+  gap: .1rem;
+  justify-items: start;
+  min-width: 0;
+  min-height: var(--tap);
+  padding: .5rem .6rem .55rem;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--c);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.gd-racer.is-momentum { --c: var(--amber); }
+.gd-racer.is-adam     { --c: var(--cyan); }
+.gd-racer:hover { border-color: var(--line-bright); border-top-color: var(--c); }
+.gd-racer[aria-pressed="false"] { opacity: .45; border-top-style: dashed; }
+.gd-racer-name {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--c);
+  white-space: nowrap;
+}
+.gd-racer-loss {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.gd-racer-note { font-family: var(--font-mono); font-size: .7rem; color: var(--text-dim); }
+.gd-racer.is-blown .gd-racer-note { color: var(--hot); font-weight: 700; }
+.gd-racer.is-settled .gd-racer-note { color: var(--green); }
+
+/* In the text: name each racer in its own colour. */
+.gd-k-gd       { color: var(--hot); }
+.gd-k-momentum { color: var(--amber); }
+.gd-k-adam     { color: var(--cyan); }
+
+/* ---- the loss chart --------------------------------------- */
+.gd-card {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .55rem .6rem .6rem;
+  min-width: 0;
+}
+.gd-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 .2rem .35rem;
+}
+.gd-axis { color: var(--text-faint); letter-spacing: .06em; }
+.gd-chart { position: relative; width: 100%; height: 120px; }
+.gd-chart > canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---- sliders ---------------------------------------------- */
+.gd-sliders { display: grid; gap: .35rem; }
+.gd-slider {
+  display: grid;
+  gap: .1rem;
+  font-size: .9rem;
+  color: var(--text-dim);
+}
+.gd-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.gd-slider output { font-family: var(--font-mono); color: var(--text); }
+.gd-slider output.is-hot { color: var(--hot); }
+.gd-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.gd-try {
+  border-left: 3px solid var(--hot);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+/* ---- wide screens: side by side --------------------------- */
+@media (min-width: 880px) {
+  .gd-layout {
+    grid-template-columns: minmax(0, min(640px, calc(100svh - var(--bar-h) - 2.5rem))) minmax(320px, 400px);
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.25rem clamp(1rem, 3vw, 2rem) 0;
+  }
+  .gd-stage {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .gd-side { padding: 0; align-content: start; }
+}
