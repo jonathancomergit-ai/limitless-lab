@@ -7,7 +7,8 @@
       "machine learning",
       "neural nets"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   },
   {
     "slug": "fourier-draw",
@@ -17,7 +18,8 @@
       "maths",
       "signals"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   },
   {
     "slug": "double-pendulum",
@@ -27,7 +29,8 @@
       "physics",
       "chaos"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   },
   {
     "slug": "gradient-descent",
@@ -37,7 +40,8 @@
       "machine learning",
       "optimisation"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   },
   {
     "slug": "boids",
@@ -47,7 +51,8 @@
       "emergence",
       "simulation"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   },
   {
     "slug": "gravity-sandbox",
@@ -57,7 +62,8 @@
       "physics",
       "space"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   },
   {
     "slug": "ripple-tank",
@@ -67,7 +73,8 @@
       "physics",
       "waves"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   },
   {
     "slug": "fractal-zoom",
@@ -77,6 +84,7 @@
       "maths",
       "fractals"
     ],
-    "added": "2026-10-09"
+    "added": "2026-10-09",
+    "thumb": "thumb.webp"
   }
 ]
