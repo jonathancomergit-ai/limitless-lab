@@ -115,7 +115,7 @@ Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bu
   - acceptance: Unit test (tests/unit): a blinker flips back after 2 steps, a glider moves 1 cell diagonally after 4, the rule parser reads "B36/S23"
   - acceptance: smoke.js: draw cells, press Step, check the generation went up
 
-- [ ] `pathfinding` - Pathfinding Race: Draw walls and watch A*, Dijkstra and breadth-first search race to the goal.
+- [x] `pathfinding` - Pathfinding Race: Draw walls and watch A*, Dijkstra and breadth-first search race to the goal.
   - acceptance: A grid; drag to draw/erase walls (touch + mouse); drag the start and goal markers
   - acceptance: Run A*, Dijkstra, BFS and greedy best-first side by side (or one at a time), each showing the cells it explored and its final path
   - acceptance: Readout per algorithm: cells explored, path length, time steps
@@ -125,7 +125,7 @@ Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bu
   - acceptance: Unit test (tests/unit): every algorithm finds a path when one exists and reports none when walled off; A* and Dijkstra find the same shortest length
   - acceptance: smoke.js: draw a wall, press Run, check a path length is shown
 
-- [ ] `epidemic` - Epidemic Sim: Dots wander, meet and pass on a germ. Slide masks, vaccines and distancing and watch the curve flatten.
+- [x] `epidemic` - Epidemic Sim: Dots wander, meet and pass on a germ. Slide masks, vaccines and distancing and watch the curve flatten.
   - acceptance: 100-1000 dots move around; colours for healthy, sick, recovered, vaccinated; tap to infect a dot
   - acceptance: Sliders: infection chance, days sick, % vaccinated, % masked, distancing (fewer moving dots)
   - acceptance: Live stacked chart of healthy / sick / recovered over time, with the peak marked
