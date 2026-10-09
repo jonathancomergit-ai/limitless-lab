@@ -1,0 +1,72 @@
+/* ============================================================
+   k-Means Clustering - layout
+
+   The dot field is the hero. Under it: Step / Play / New start /
+   Clear, what just happened, k, dot sets, the elbow chart.
+   ============================================================ */
+
+.km-stage {
+  cursor: crosshair;
+  height: clamp(300px, min(60svh, 115vw), 720px);
+}
+.km-stage:focus-visible { outline-offset: -3px; }
+
+.km-controls {
+  display: grid;
+  gap: .9rem;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+.km-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; }
+.km-row .btn,
+.km-presets .btn { min-height: var(--tap); padding-inline: .3rem; min-width: 0; font-size: .9rem; }
+.km-presets .btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+
+.km-status { margin: -.2rem 0 0; font-size: .9rem; color: var(--text-dim); min-height: 1.4em; }
+.km-hint { margin: .2rem 0 0; font-size: .85rem; color: var(--text-dim); }
+
+.km-group { display: grid; gap: .35rem; min-width: 0; }
+.km-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.km-presets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem; }
+
+.km-slider { display: grid; gap: .05rem; font-size: .9rem; color: var(--text-dim); min-width: 0; }
+.km-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.km-slider output { font-family: var(--font-mono); color: var(--text); }
+.km-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.km-elbow {
+  position: relative;
+  height: 170px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-2);
+  overflow: hidden;
+}
+.km-elbow canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.km-try {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+@media (min-width: 640px) {
+  .km-presets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
