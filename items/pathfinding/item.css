@@ -1,0 +1,119 @@
+/* ============================================================
+   Pathfinding Race - layout
+
+   The grid is the hero. Under it: Race / Reset / Clear, the
+   results table, then view, tools, presets and speed.
+   ============================================================ */
+
+.pf-stage {
+  cursor: crosshair;
+  height: clamp(320px, min(62svh, 130vw), 720px);
+}
+.pf-stage:focus-visible { outline-offset: -3px; }
+
+.pf-controls {
+  display: grid;
+  gap: .9rem;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+.pf-group { display: grid; gap: .35rem; min-width: 0; }
+.pf-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.pf-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: .4rem; }
+.pf-seg { display: grid; gap: .4rem; }
+.pf-seg[hidden] { display: none; }
+.pf-seg-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.pf-seg-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pf-seg-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.pf-row .btn,
+.pf-seg .btn { min-height: var(--tap); padding-inline: .3rem; min-width: 0; font-size: .88rem; }
+.pf-seg .btn[aria-pressed="true"] {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.pf-key {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text-faint);
+  border: 1px solid var(--line-bright);
+  border-radius: 4px;
+  padding: 0 .3rem;
+  line-height: 1.4;
+}
+
+/* ---- results table ---------------------------------------- */
+.pf-results { min-width: 0; overflow-x: auto; }
+.pf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.pf-table th,
+.pf-table td {
+  padding: .4rem .35rem;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.pf-table th {
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.pf-table th:first-child,
+.pf-table td:first-child { text-align: left; }
+.pf-table td { font-family: var(--font-mono); color: var(--text); }
+.pf-table td:first-child { font-family: var(--font-body); font-weight: 600; }
+.pf-dot {
+  display: inline-block;
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
+  margin-right: .35rem;
+  vertical-align: -.05rem;
+}
+.pf-dot.is-astar { background: var(--cyan); }
+.pf-dot.is-dijkstra { background: var(--amber); }
+.pf-dot.is-bfs { background: var(--green); }
+.pf-dot.is-greedy { background: var(--hot); }
+.pf-win { color: var(--amber); font-size: .75rem; margin-left: .25rem; }
+.pf-table tr.is-dim td { opacity: .45; }
+
+/* ---- slider ----------------------------------------------- */
+.pf-slider { display: grid; gap: .05rem; font-size: .9rem; color: var(--text-dim); min-width: 0; }
+.pf-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.pf-slider output { font-family: var(--font-mono); color: var(--text); }
+.pf-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.pf-try {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+@media (max-width: 400px) {
+  .pf-key { display: none; }
+  .pf-table th, .pf-table td { padding-inline: .2rem; }
+}
