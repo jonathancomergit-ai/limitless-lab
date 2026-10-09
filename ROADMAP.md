@@ -146,7 +146,7 @@ Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bu
   - acceptance: Unit test (tests/unit): Snell's law angles match known values, total internal reflection past the critical angle, a mirror reflects at equal angles
   - acceptance: smoke.js: drag a lens, check the ray path changed
 
-- [ ] `k-means` - k-Means Clustering: Tap to drop dots and watch a computer sort them into groups by itself.
+- [x] `k-means` - k-Means Clustering: Tap to drop dots and watch a computer sort them into groups by itself.
   - acceptance: Tap/drag to drop dots (touch + mouse); presets: 3 blobs, 5 blobs, smiley, uneven sizes
   - acceptance: Slider for k (2-8); Step shows the two moves (assign, then move the centres) one at a time; Play runs to the end
   - acceptance: Each group coloured, centres drawn as big markers with a trail of where they moved; the Voronoi regions shaded softly
