@@ -157,10 +157,13 @@ function colourOf(i, n, alpha = 1) {
   return `hsla(${hue(i, n).toFixed(1)}, 92%, 62%, ${alpha})`;
 }
 
-/* Pivot sits so both rods fully stretched fit, up or down. */
+/* Pivot sits so both rods fully stretched fit, up or down.
+   Kept above 0: while the page is still laying out, the canvas
+   can be a few pixels (or 0) big, and a negative scale makes
+   ctx.arc() throw on a negative radius. */
 function frame() {
   const reach = state.params.l1 + state.params.l2;
-  const scale = (Math.min(view.width, view.height) / 2 - 22) / reach;
+  const scale = Math.max(0.001, (Math.min(view.width, view.height) / 2 - 22) / reach);
   return { px: view.width / 2, py: view.height / 2, scale };
 }
 
