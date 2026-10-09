@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Fourier Draw - Limitless Lab</title>
+  <meta name="description" content="Draw any shape with your finger, then watch spinning circles redraw it. That's a Fourier series.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Fourier Draw</h1>
+  </header>
+
+  <main id="main">
+    <!-- ===================== THE STAGE (hero) ===================== -->
+    <div class="stage fd-stage" id="stage" tabindex="0" role="group"
+         aria-label="Drawing area. Draw a shape with your finger or mouse. Keyboard: left and right change the number of circles, up and down change the speed, Space plays or pauses.">
+      <canvas role="img" aria-label="A chain of spinning circles, each riding on the last, whose tip traces the drawing."></canvas>
+      <div class="hud">
+        <div>Circles <output id="count">0</output></div>
+        <div>Match <output id="match">-</output></div>
+      </div>
+      <p class="stage-msg fd-hint" id="msg" hidden>Draw a shape</p>
+    </div>
+
+    <!-- ===================== CONTROLS ===================== -->
+    <div class="fd-controls">
+      <div class="fd-row fd-run" role="group" aria-label="Playback">
+        <button class="btn btn-primary" id="play" type="button" aria-pressed="true">Pause</button>
+        <button class="btn" id="draw" type="button">Draw new</button>
+        <button class="chip" id="ghost" type="button" aria-pressed="true">Show drawing</button>
+      </div>
+
+      <div class="fd-row fd-presets" role="group" aria-label="Presets">
+        <button class="chip" type="button" data-shape="heart" aria-pressed="false">Heart</button>
+        <button class="chip" type="button" data-shape="star" aria-pressed="false">Star</button>
+        <button class="chip" type="button" data-shape="note" aria-pressed="false">Music note</button>
+      </div>
+
+      <div class="fd-sliders">
+        <label class="fd-slider">
+          <span>Circles <output id="circles-out">100</output></span>
+          <input type="range" id="circles" min="1" max="256" step="1" value="100">
+        </label>
+        <label class="fd-slider">
+          <span>Speed <output id="speed-out">4</output></span>
+          <input type="range" id="speed" min="1" max="10" step="1" value="4">
+        </label>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Draw one shape on the stage, in one go.</li>
+            <li>Let go. The circles start spinning and redraw it.</li>
+            <li>Slide <strong>Circles</strong> down to 1, then back up. Watch the shape appear.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Draw</td><td>Drag a finger</td><td>Drag the mouse, or pick a preset</td></tr>
+              <tr><td>Fewer / more circles</td><td>Circles slider</td><td><kbd>&larr;</kbd> <kbd>&rarr;</kbd> on the stage</td></tr>
+              <tr><td>Slower / faster</td><td>Speed slider</td><td><kbd>&darr;</kbd> <kbd>&uarr;</kbd> on the stage</td></tr>
+              <tr><td>Play / Pause</td><td>Pause button</td><td><kbd>P</kbd></td></tr>
+              <tr><td>Heart / Star / Note</td><td>Preset buttons</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>Your drawing is turned into 256 dots, spaced evenly along the line.</li>
+            <li>A <strong>Fourier transform</strong> finds circles that, added up, hit every dot.</li>
+            <li>Each circle spins at its own steady speed. Some spin backwards.</li>
+            <li>Each circle rides on the tip of the one before. The last tip draws the line.</li>
+            <li>The <strong>big, slow</strong> circles give the rough shape. The <strong>small, fast</strong> ones add the sharp details.</li>
+            <li>This same idea squeezes music into MP3s and photos into JPEGs.</li>
+          </ul>
+          <p class="fd-try"><strong>Try this:</strong> load the <strong>Star</strong>. What is the fewest circles that still gives five clear points?</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>
