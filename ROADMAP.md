@@ -136,7 +136,7 @@ Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bu
   - acceptance: Unit test (tests/unit): with 0% infection chance nobody else gets sick; same seed gives the same run; totals always add up
   - acceptance: smoke.js: start a run, check the sick count changed
 
-- [ ] `light-lenses` - Light & Lenses: Drag lenses, mirrors and prisms around and watch light bend, focus and split into a rainbow.
+- [x] `light-lenses` - Light & Lenses: Drag lenses, mirrors and prisms around and watch light bend, focus and split into a rainbow.
   - acceptance: A light source (laser or lamp) and draggable, rotatable pieces: convex lens, concave lens, flat mirror, curved mirror, prism, glass block
   - acceptance: Ray tracing with Snell's law and reflection; total internal reflection shows up in the glass block
   - acceptance: White light through a prism splits into colours (refractive index changes with wavelength)
