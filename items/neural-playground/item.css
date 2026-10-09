@@ -1,0 +1,143 @@
+/* ============================================================
+   Neural Net Playground - layout
+
+   Phone: the square plot fills the width, controls stack under it.
+   Wide screens: plot on the left, controls in a column on the right.
+   ============================================================ */
+
+.nn-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The plot is square. Its canvas fills it (kit/canvas.js). */
+.nn-stage {
+  height: auto;
+  aspect-ratio: 1 / 1;
+  cursor: crosshair;
+}
+.nn-stage:focus-visible { outline-offset: -3px; }
+
+.nn-side {
+  display: grid;
+  gap: .85rem;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+  min-width: 0;
+}
+
+/* ---- button rows ------------------------------------------ */
+.nn-group {
+  display: grid;
+  gap: .5rem;
+  min-width: 0;
+}
+.nn-run    { grid-template-columns: 1.4fr 1fr 1fr; }
+.nn-paint  { grid-template-columns: 1fr 1fr 1fr; }
+.nn-presets { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.nn-acts   { grid-template-columns: auto repeat(3, minmax(0, 1fr)); align-items: center; }
+
+.nn-side .btn,
+.nn-side .chip {
+  min-height: var(--tap);
+  padding-inline: .4rem;
+  min-width: 0;
+}
+.nn-side .chip { font-size: .72rem; letter-spacing: .04em; }
+
+.nn-label {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding-right: .2rem;
+}
+
+/* Colour pickers: a dot in the colour, filled in when chosen. */
+.nn-swatch { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; }
+.nn-swatch::before {
+  content: "";
+  width: .8rem;
+  height: .8rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+.nn-swatch.is-red::before  { background: var(--hot); }
+.nn-swatch.is-blue::before { background: var(--cyan); }
+.nn-swatch.is-red[aria-pressed="true"]  { background: var(--hot); border-color: var(--hot); color: var(--bg); }
+.nn-swatch.is-blue[aria-pressed="true"] { background: var(--cyan); border-color: var(--cyan); color: var(--bg); }
+.nn-swatch[aria-pressed="true"]::before { background: var(--bg); box-shadow: none; }
+
+/* ---- the two small charts --------------------------------- */
+.nn-cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: .75rem;
+}
+.nn-card {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .55rem .6rem .6rem;
+  min-width: 0;
+}
+.nn-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 .2rem .35rem;
+}
+.nn-acc { color: var(--text); letter-spacing: .04em; }
+.nn-box { position: relative; width: 100%; }
+.nn-box > canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.nn-box-net  { height: 190px; }
+.nn-box-loss { height: 96px; }
+
+/* ---- sliders ---------------------------------------------- */
+.nn-sliders { display: grid; gap: .35rem; }
+.nn-slider {
+  display: grid;
+  gap: .1rem;
+  font-size: .9rem;
+  color: var(--text-dim);
+}
+.nn-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.nn-slider output { font-family: var(--font-mono); color: var(--text); }
+.nn-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.nn-try {
+  border-left: 3px solid var(--hot);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+/* ---- wide screens: side by side --------------------------- */
+@media (min-width: 880px) {
+  .nn-layout {
+    grid-template-columns: minmax(0, min(640px, calc(100svh - var(--bar-h) - 2.5rem))) minmax(320px, 400px);
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.25rem clamp(1rem, 3vw, 2rem) 0;
+  }
+  .nn-stage {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .nn-side { padding: 0; align-content: start; }
+  .nn-box-net { height: 170px; }
+}

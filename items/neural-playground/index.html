@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Neural Net Playground - Limitless Lab</title>
+  <meta name="description" content="Drop red and blue dots and watch a tiny neural network learn to tell them apart, live.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Neural Net Playground</h1>
+  </header>
+
+  <main id="main">
+    <div class="nn-layout">
+      <!-- ===================== THE PLOT (hero) ===================== -->
+      <div class="stage nn-stage" id="stage" tabindex="0" role="group"
+           aria-label="Dot plot. Tap to add a dot. Keyboard: arrow keys move the cursor, Enter adds a dot.">
+        <canvas role="img" aria-label="A square plot of red and blue dots, with a soft red and blue background showing what the network thinks each spot is."></canvas>
+        <div class="hud">
+          <div>Epoch <output id="epoch">0</output></div>
+          <div>Loss <output id="loss">-</output></div>
+        </div>
+        <p class="stage-msg" id="msg" hidden>Tap to add dots</p>
+      </div>
+
+      <!-- ===================== CONTROLS ===================== -->
+      <div class="nn-side">
+        <div class="nn-group nn-run" role="group" aria-label="Training">
+          <button class="btn btn-primary" id="play" type="button" aria-pressed="false">Play</button>
+          <button class="btn" id="step" type="button">Step</button>
+          <button class="btn" id="reset" type="button">Reset</button>
+        </div>
+
+        <div class="nn-group nn-paint" role="group" aria-label="Dot colour">
+          <button class="chip nn-swatch is-red" id="pick-red" type="button" aria-pressed="true">Red dot</button>
+          <button class="chip nn-swatch is-blue" id="pick-blue" type="button" aria-pressed="false">Blue dot</button>
+          <button class="btn" id="clear" type="button">Clear</button>
+        </div>
+
+        <div class="nn-group nn-presets" role="group" aria-label="Presets">
+          <button class="chip" type="button" data-preset="blobs">Blobs</button>
+          <button class="chip" type="button" data-preset="circle">Circle</button>
+          <button class="chip" type="button" data-preset="xor">XOR</button>
+          <button class="chip" type="button" data-preset="spiral">Spiral</button>
+        </div>
+
+        <div class="nn-cards">
+          <figure class="nn-card">
+            <figcaption>The network</figcaption>
+            <div class="nn-box nn-box-net" id="net-box">
+              <canvas role="img" aria-label="The network: circles are neurons, lines are weights. Blue lines are positive, red lines are negative, thicker means stronger."></canvas>
+            </div>
+          </figure>
+          <figure class="nn-card">
+            <figcaption>Loss over time <output id="acc" class="nn-acc"></output></figcaption>
+            <div class="nn-box nn-box-loss" id="loss-box">
+              <canvas role="img" aria-label="A line chart of the loss. Going down means the network is learning."></canvas>
+            </div>
+          </figure>
+        </div>
+
+        <div class="nn-sliders">
+          <label class="nn-slider">
+            <span>Hidden layers <output id="layers-out">2</output></span>
+            <input type="range" id="layers" min="1" max="3" step="1" value="2">
+          </label>
+          <label class="nn-slider">
+            <span>Neurons per layer <output id="neurons-out">4</output></span>
+            <input type="range" id="neurons" min="1" max="8" step="1" value="4">
+          </label>
+          <label class="nn-slider">
+            <span>Learning rate <output id="lr-out">0.03</output></span>
+            <input type="range" id="lr" min="0" max="12" step="1" value="7">
+          </label>
+        </div>
+
+        <div class="nn-group nn-acts" role="group" aria-label="Activation">
+          <span class="nn-label">Activation</span>
+          <button class="chip" type="button" data-act="tanh" aria-pressed="true">tanh</button>
+          <button class="chip" type="button" data-act="relu" aria-pressed="false">ReLU</button>
+          <button class="chip" type="button" data-act="sigmoid" aria-pressed="false">sigmoid</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Pick <strong>Red dot</strong> or <strong>Blue dot</strong>, then tap the plot.</li>
+            <li>Press <strong>Play</strong> and watch the colours settle.</li>
+            <li>Try a preset, or change the layers and neurons.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Add a dot</td><td>Tap the plot</td><td>Arrows, then <kbd>Enter</kbd></td></tr>
+              <tr><td>Remove a dot</td><td>Tap the dot</td><td><kbd>Enter</kbd> on it</td></tr>
+              <tr><td>Swap colour</td><td>Red / Blue</td><td><kbd>C</kbd></td></tr>
+              <tr><td>Play / Pause</td><td>Play</td><td><kbd>P</kbd></td></tr>
+              <tr><td>One step</td><td>Step</td><td><kbd>N</kbd></td></tr>
+              <tr><td>New random start</td><td>Reset</td><td><kbd>R</kbd></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>Each <strong>neuron</strong> adds up its inputs, each times a <strong>weight</strong>, then squashes the total.</li>
+            <li>At first the weights are random, so the guesses are random too.</li>
+            <li>The <strong>loss</strong> is a score for how wrong the guesses are. Lower is better.</li>
+            <li>Each <strong>epoch</strong>, the net nudges every weight a little in the direction that lowers the loss. That's <strong>backpropagation</strong>.</li>
+            <li>The soft background is the net's guess for every spot. The bright line is where it flips from red to blue.</li>
+            <li>One neuron can only draw a straight line. Stacking neurons lets the net bend lines into curves.</li>
+          </ul>
+          <p class="nn-try"><strong>Try this:</strong> load <strong>Spiral</strong>, set 1 layer of 2 neurons and press Play. Stuck? Now add layers and neurons until it wins.</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>
