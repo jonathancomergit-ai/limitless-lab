@@ -1,0 +1,61 @@
+/* ============================================================
+   Fourier Draw - layout
+
+   The stage is the hero. Controls sit under it in a tidy grid:
+   one column on a phone, centred and capped on wide screens.
+   ============================================================ */
+
+.fd-stage { cursor: crosshair; }
+.fd-stage:focus-visible { outline-offset: -3px; }
+.fd-hint { color: var(--text-dim); }
+
+.fd-controls {
+  display: grid;
+  gap: .85rem;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+.fd-row { display: grid; gap: .5rem; min-width: 0; }
+.fd-run     { grid-template-columns: 1.2fr 1fr 1fr; }
+.fd-presets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.fd-controls .btn,
+.fd-controls .chip {
+  min-height: var(--tap);
+  padding-inline: .4rem;
+  min-width: 0;
+}
+.fd-controls .chip { font-size: .74rem; letter-spacing: .04em; }
+
+.fd-sliders { display: grid; gap: .35rem 1.5rem; }
+.fd-slider {
+  display: grid;
+  gap: .1rem;
+  font-size: .9rem;
+  color: var(--text-dim);
+  min-width: 0;
+}
+.fd-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.fd-slider output { font-family: var(--font-mono); color: var(--text); }
+.fd-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.fd-try {
+  border-left: 3px solid var(--hot);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+@media (min-width: 700px) {
+  .fd-sliders { grid-template-columns: 1fr 1fr; }
+}

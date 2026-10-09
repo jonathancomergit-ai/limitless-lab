@@ -29,7 +29,7 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: Unit test (tests/unit): gradients match a numerical check, and training on XOR gets loss under 0.1
   - acceptance: smoke.js: add a dot, press Play, check the loss went down
 
-- [ ] `fourier-draw` - Fourier Draw: Draw any shape with your finger, then watch spinning circles redraw it. That's a Fourier series.
+- [x] `fourier-draw` - Fourier Draw: Draw any shape with your finger, then watch spinning circles redraw it. That's a Fourier series.
   - acceptance: Draw a path with touch or mouse; it's resampled to evenly spaced points
   - acceptance: Discrete Fourier transform in plain JS (items/fourier-draw/dft.js); circles sorted biggest first
   - acceptance: Circles chain tip-to-tip and trace the drawing; slider for how many circles (1 to all); speed slider
