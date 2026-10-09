@@ -51,6 +51,55 @@ Tonight's three for 🔬 Lab, in this order.
   - acceptance: Unit test (tests/unit): energy stays within 0.5% over 10 simulated seconds
   - acceptance: smoke.js: let it run, check time advanced and the first two pendulums' angles differ
 
+### Batch 2
+
+- [ ] `gradient-descent` - Gradient Descent Hill: Drop a ball on a hilly landscape and watch it roll to the bottom. It's how AI learns, one small step at a time.
+  - acceptance: A 2D landscape drawn as a contour heatmap; presets: bowl, long valley (Rosenbrock), bumpy (many dips), saddle
+  - acceptance: Tap to drop a ball; race optimisers side by side: plain gradient descent, momentum and Adam, each its own colour with a trail
+  - acceptance: Learning-rate slider (log scale) that shows overshooting and blowing up when too big
+  - acceptance: Loss-over-steps chart and a step counter
+  - acceptance: "What's happening?" panel + one "Try this" challenge; link to the Neural Net Playground
+  - acceptance: Unit test (tests/unit): gradients match a numerical check, Adam reaches the bowl's bottom, a huge learning rate diverges
+  - acceptance: smoke.js: drop a ball, check it moved downhill (loss went down)
+
+- [ ] `boids` - Boids Flocking: Hundreds of birds following just three simple rules. Watch a flock appear out of nothing.
+  - acceptance: Reynolds' three rules: separation, alignment, cohesion, each with a slider; plus vision radius and speed
+  - acceptance: 50 to 600 boids; a spatial grid keeps it smooth; fewer boids by default on phones
+  - acceptance: Tap/click to drop a predator the flock flees; drag to draw obstacles; Clear
+  - acceptance: Toggle to show one boid's vision circle and the three forces on it as arrows
+  - acceptance: "What's happening?" panel + one "Try this" challenge (e.g. turn off cohesion)
+  - acceptance: Unit test (tests/unit): each rule gives the expected direction on small hand-made setups
+  - acceptance: smoke.js: let it run, change a slider, check the boids moved and the setting applied
+
+- [ ] `gravity-sandbox` - Gravity Sandbox: Fling planets and stars around and watch them orbit, slingshot and crash. Real Newtonian gravity.
+  - acceptance: Drag to throw a new body (drag length = speed); pick its size
+  - acceptance: Presets: sun and planets, binary stars, the figure-8 three-body orbit, a planet with moons
+  - acceptance: A symplectic integrator (velocity Verlet / leapfrog) so orbits stay stable; collisions merge bodies and keep momentum
+  - acceptance: Trails, pinch / scroll zoom, drag to pan, follow the centre of mass
+  - acceptance: Readout: total energy and momentum
+  - acceptance: "What's happening?" panel + one "Try this" challenge
+  - acceptance: Unit test (tests/unit): a circular orbit keeps its radius within 1% over 10 orbits; a merge conserves momentum
+  - acceptance: smoke.js: throw a body, check the body count went up and time advanced
+
+- [ ] `ripple-tank` - Ripple Tank: Tap the water to make waves. Build walls and slits and watch the waves interfere, just like light.
+  - acceptance: 2D wave equation on a grid (finite differences) with gentle damping, drawn as a colour map
+  - acceptance: Tap = a drop; drag = draw walls; tools: drop, wall, eraser
+  - acceptance: Presets: single drop, two sources (interference), double slit, a wall with a gap
+  - acceptance: Wave source frequency slider; Pause / Clear
+  - acceptance: "What's happening?" panel + one "Try this" challenge (connect it to light and the double-slit experiment)
+  - acceptance: Unit test (tests/unit): the time step respects the stability limit (no blow-up over many steps), and a centred drop stays symmetric
+  - acceptance: smoke.js: tap the water, check the wave grid changed
+
+- [ ] `fractal-zoom` - Fractal Zoom: Dive into the Mandelbrot set. Zoom forever into shapes that never repeat, then jump to matching Julia sets.
+  - acceptance: Mandelbrot with smooth colouring from the palette CSS variables
+  - acceptance: Pinch / scroll to zoom, drag to pan, double-tap to zoom in; keyboard: arrows pan, +/- zoom
+  - acceptance: Rendered in Web Workers in tiles, coarse first then sharp, so it never freezes
+  - acceptance: Iterations rise with zoom (with a slider); show the zoom level and explain the ~10^13 precision limit when reached
+  - acceptance: Tap a spot with Julia mode on to see that point's Julia set
+  - acceptance: Bookmarks: save favourite spots on the device; Export/Import works
+  - acceptance: "What's happening?" panel + one "Try this" challenge
+  - acceptance: Unit test (tests/unit): known points inside / outside the set, and the smooth escape value
+  - acceptance: smoke.js: zoom in, check the zoom level changed and the canvas re-rendered
 ## Ideas (not ready yet)
 
 - (add more here)

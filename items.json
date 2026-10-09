@@ -28,5 +28,60 @@
       "chaos"
     ],
     "added": "2026-10-09"
+  },
+  {
+    "slug": "gradient-descent",
+    "title": "Gradient Descent Hill",
+    "blurb": "Drop a ball on a hilly landscape and watch it roll to the bottom. It's how AI learns, one small step at a time.",
+    "tags": [
+      "machine learning",
+      "optimisation"
+    ],
+    "added": "2026-10-09",
+    "soon": true
+  },
+  {
+    "slug": "boids",
+    "title": "Boids Flocking",
+    "blurb": "Hundreds of birds following just three simple rules. Watch a flock appear out of nothing.",
+    "tags": [
+      "emergence",
+      "simulation"
+    ],
+    "added": "2026-10-09",
+    "soon": true
+  },
+  {
+    "slug": "gravity-sandbox",
+    "title": "Gravity Sandbox",
+    "blurb": "Fling planets and stars around and watch them orbit, slingshot and crash. Real Newtonian gravity.",
+    "tags": [
+      "physics",
+      "space"
+    ],
+    "added": "2026-10-09",
+    "soon": true
+  },
+  {
+    "slug": "ripple-tank",
+    "title": "Ripple Tank",
+    "blurb": "Tap the water to make waves. Build walls and slits and watch the waves interfere, just like light.",
+    "tags": [
+      "physics",
+      "waves"
+    ],
+    "added": "2026-10-09",
+    "soon": true
+  },
+  {
+    "slug": "fractal-zoom",
+    "title": "Fractal Zoom",
+    "blurb": "Dive into the Mandelbrot set. Zoom forever into shapes that never repeat, then jump to matching Julia sets.",
+    "tags": [
+      "maths",
+      "fractals"
+    ],
+    "added": "2026-10-09",
+    "soon": true
   }
 ]
