@@ -8,7 +8,7 @@
    - no inline <script>, <style>, style="" or onclick=""
    - nothing loaded from another origin (links to click are fine)
    - kit/stats.js included once, deferred
-   - hub footers carry the privacy note
+   - footers carry the privacy note and a link to the full policy
 
    And for every .js / .css file:
    - no outside URLs except GoatCounter (and plain links in site.config.js)
@@ -39,6 +39,7 @@ export const CSP = [
 ].join("; ");
 
 const PRIVACY_NOTE = "No accounts, no cookies.</strong> Saves stay on your device. Cookie-free visit counts via GoatCounter.";
+const PRIVACY_LINK = "<a href=\"https://jonjoe1001.dev/privacy.html#limitless\">Privacy</a>";
 
 function walk(dir, out = []) {
   for (const d of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -107,6 +108,7 @@ for (const file of html) {
     const footer = src.match(/<footer[\s\S]*<\/footer>/i);
     assert.ok(footer, "no <footer>");
     assert.ok(squash(footer[0]).includes(PRIVACY_NOTE), "privacy note missing or reworded");
+    assert.ok(squash(footer[0]).includes(`${PRIVACY_NOTE} ${PRIVACY_LINK}`), "privacy note has no link to the full policy");
   });
 
   test(`${name}: has lang, viewport and a title`, () => {
