@@ -183,7 +183,7 @@ Three more labs. Every one gets a "What's happening?" panel (4-6 bullets, plain 
   - acceptance: Unit test (tests/unit): Q-learning on a small maze finds the shortest path, one cart-pole step matches hand-worked values
   - acceptance: smoke.js: press Train on the maze, check episodes went up and average reward improved
 
-- [ ] `fluid-sim` - Fluid Sim: Stir smoke and ink with your finger and watch it swirl, curl and mix. Real fluid equations, running live in your browser.
+- [x] `fluid-sim` - Fluid Sim: Stir smoke and ink with your finger and watch it swirl, curl and mix. Real fluid equations, running live in your browser.
   - acceptance: Stable-fluids solver on a grid in plain JS (items/fluid-sim/fluid.js): advection, diffusion, pressure projection, vorticity; smaller grid on phones
   - acceptance: Drag to push fluid and add dye (touch + mouse; several fingers make several streams); colour picker and rainbow mode
   - acceptance: Sliders: viscosity, dye fade, swirl; toggles: velocity arrows, pressure view

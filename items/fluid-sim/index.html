@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Fluid Sim - Limitless Lab</title>
+  <meta name="description" content="Stir smoke and ink with your finger and watch it swirl, curl and mix. Real fluid equations, running live in your browser.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Fluid Sim</h1>
+  </header>
+
+  <main id="main">
+    <!-- ===================== THE TANK (hero) ===================== -->
+    <div class="stage fs-stage" id="stage" tabindex="0" role="group"
+         aria-label="Fluid tank. Drag to stir, or to draw walls, depending on the tool. Several fingers make several streams. Keyboard: arrows stir or move the cursor, Space adds ink or lifts the pen.">
+      <canvas role="img" aria-label="A dark tank of fluid with bright swirls of coloured ink curling and mixing, and grey walls."></canvas>
+      <div class="hud">
+        <div><output id="mode">Two jets</output></div>
+        <div><output id="fps">60 fps</output></div>
+      </div>
+      <p class="stage-msg" id="msg" hidden>Paused</p>
+    </div>
+
+    <!-- ===================== CONTROLS ===================== -->
+    <div class="fs-controls">
+      <div class="fs-row" role="group" aria-label="Playback">
+        <button class="btn btn-primary" id="play" type="button" aria-pressed="true">Pause</button>
+        <button class="btn" id="clear-ink" type="button">Clear ink</button>
+        <button class="btn" id="clear-all" type="button">Clear all</button>
+      </div>
+
+      <div class="fs-group">
+        <span class="fs-label" id="tool-label">Tool</span>
+        <div class="fs-seg" role="group" aria-labelledby="tool-label">
+          <button class="btn" type="button" data-tool="stir" aria-pressed="true"><span class="fs-key" aria-hidden="true">1</span> Stir</button>
+          <button class="btn" type="button" data-tool="wall" aria-pressed="false"><span class="fs-key" aria-hidden="true">2</span> Wall</button>
+          <button class="btn" type="button" data-tool="erase" aria-pressed="false"><span class="fs-key" aria-hidden="true">3</span> Eraser</button>
+        </div>
+      </div>
+
+      <div class="fs-group">
+        <span class="fs-label" id="ink-label">Ink colour: <span id="ink-name">Rainbow</span></span>
+        <div class="fs-inks" role="group" aria-labelledby="ink-label">
+          <button class="fs-ink is-rainbow" type="button" data-ink="rainbow" aria-pressed="true"><i aria-hidden="true"></i>Rainbow</button>
+          <button class="fs-ink is-pink" type="button" data-ink="pink" aria-pressed="false" aria-label="Pink"><i aria-hidden="true"></i></button>
+          <button class="fs-ink is-cyan" type="button" data-ink="cyan" aria-pressed="false" aria-label="Cyan"><i aria-hidden="true"></i></button>
+          <button class="fs-ink is-amber" type="button" data-ink="amber" aria-pressed="false" aria-label="Amber"><i aria-hidden="true"></i></button>
+          <button class="fs-ink is-green" type="button" data-ink="green" aria-pressed="false" aria-label="Green"><i aria-hidden="true"></i></button>
+          <button class="fs-ink is-violet" type="button" data-ink="violet" aria-pressed="false" aria-label="Violet"><i aria-hidden="true"></i></button>
+          <button class="fs-ink is-white" type="button" data-ink="white" aria-pressed="false" aria-label="White"><i aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+      <div class="fs-group">
+        <span class="fs-label" id="preset-label">Start with</span>
+        <div class="fs-presets" role="group" aria-labelledby="preset-label">
+          <button class="btn" type="button" data-preset="jets">Two jets</button>
+          <button class="btn" type="button" data-preset="smoke">Rising smoke</button>
+          <button class="btn" type="button" data-preset="wind">Wind + ball</button>
+        </div>
+      </div>
+
+      <div class="fs-sliders">
+        <label class="fs-slider">
+          <span>Viscosity (thickness) <output id="viscosity-out">water</output></span>
+          <input type="range" id="viscosity" min="0" max="10" step="1" value="1">
+        </label>
+        <label class="fs-slider">
+          <span>Dye fade <output id="fade-out">3</output></span>
+          <input type="range" id="fade" min="0" max="10" step="1" value="3">
+        </label>
+        <label class="fs-slider">
+          <span>Swirl <output id="swirl-out">4</output></span>
+          <input type="range" id="swirl" min="0" max="10" step="1" value="4">
+        </label>
+      </div>
+
+      <div class="fs-toggles">
+        <button class="chip fs-toggle" id="arrows" type="button" aria-pressed="false">Velocity arrows</button>
+        <button class="chip fs-toggle" id="pressure" type="button" aria-pressed="false">Pressure view</button>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Drag through the tank to <strong>stir</strong>. Use two or three fingers for two or three streams.</li>
+            <li>Pick <strong>Wall</strong> and draw a wall. Stir again and watch the fluid flow round it.</li>
+            <li>Try <strong>Wind + ball</strong> and watch swirls peel off behind the ball.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Stir</td><td>Stir tool, drag (more fingers = more streams)</td><td><kbd>1</kbd>, then arrows (on the tank)</td></tr>
+              <tr><td>Drop a blob of ink</td><td>Stir tool, tap</td><td><kbd>Space</kbd> (on the tank)</td></tr>
+              <tr><td>Draw a wall</td><td>Wall tool, drag</td><td><kbd>2</kbd>, <kbd>Space</kbd> pen down, arrows draw</td></tr>
+              <tr><td>Rub out a wall</td><td>Eraser tool, drag</td><td><kbd>3</kbd>, <kbd>Space</kbd> pen down, arrows rub</td></tr>
+              <tr><td>Next ink colour</td><td>Colour buttons</td><td><kbd>C</kbd></td></tr>
+              <tr><td>Velocity arrows / pressure view</td><td>The two toggles</td><td><kbd>V</kbd> / <kbd>H</kbd></td></tr>
+              <tr><td>Pause / Play</td><td>Pause button</td><td><kbd>P</kbd></td></tr>
+              <tr><td>Clear ink / Clear all</td><td>Buttons</td><td><kbd>I</kbd> / <kbd>X</kbd></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>The tank is a grid of tiny boxes. Each box knows how fast the fluid in it is moving, and how much ink it holds.</li>
+            <li><strong>Advection:</strong> everything is carried along by the flow, even the flow itself. That's why a push keeps going after you let go.</li>
+            <li><strong>Pressure:</strong> water can't be squashed. Push it one way and it has to get out of the way somewhere else. Every step, the sim finds the pressure that makes each box have exactly as much flowing in as out. In the <strong>pressure view</strong>, pink is high (squeezed) and blue is low.</li>
+            <li><strong>Viscosity:</strong> how thick the fluid is. Thick fluids like honey smear every swirl out.</li>
+            <li><strong>Swirl</strong> (vorticity): finds the spinning bits and spins them a little harder, so small curls don't blur away.</li>
+            <li>Together these are the <strong>Navier-Stokes equations</strong>: the same maths behind weather forecasts, aircraft design and the smoke in films.</li>
+          </ul>
+          <p class="fs-try"><strong>Try this:</strong> load <strong>Wind + ball</strong>. Do the swirls behind the ball peel off one side, then the other? Now turn viscosity up to honey. What happens to them?</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+        <a href="https://jonjoe1001.dev/privacy.html#limitless">Privacy</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>
