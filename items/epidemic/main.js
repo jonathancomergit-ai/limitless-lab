@@ -343,6 +343,7 @@ function infectRandom() {
 function doNewRun() {
   ghost = null;
   $("compare").setAttribute("aria-pressed", "false");
+  lastHud = "";
   newRun(false);
 }
 
@@ -393,10 +394,20 @@ onMotionChange((v) => { calm = v; draw(); });
    Reduced motion: the dots are a still grid (only their colours
    change), and it starts paused with a Play button.
    ============================================================ */
+/* Once the outbreak is over nothing moves, so the loop stops
+   repainting. Taps, sliders and new runs still call draw(), and a
+   new sick dot or a new run starts the frames again. */
+let drawnDone = false;
+function drawFrame() {
+  if (sim.done && drawnDone) { return; }
+  drawnDone = sim.done;
+  draw();
+}
+
 apply(save.get());
 loop = startLoop({
   update,
-  draw,
+  draw: drawFrame,
   startPaused: calm,
   onPauseChange(paused) {
     playBtn.textContent = paused ? "Play" : "Pause";
