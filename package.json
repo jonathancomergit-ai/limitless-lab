@@ -13,6 +13,7 @@
     "test:e2e": "playwright test",
     "serve": "node tests/server.js",
     "new-item": "node scripts/new-item.js",
+    "sitemap": "node scripts/build-sitemap.js",
     "kit:hash": "node scripts/kit-hash.js"
   },
   "devDependencies": {
