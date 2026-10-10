@@ -18,7 +18,7 @@ import { pointer, createKeys } from "../../kit/input.js";
 import { createSave } from "../../kit/save.js";
 import { mountSavePanel } from "../../kit/save-ui.js";
 import { reducedMotion } from "../../kit/motion.js";
-import { createRun, step, spread, sizes, elbow, nearest, preset, PRESETS } from "./kmeans.js";
+import { createRun, addToRun, step, spread, sizes, elbow, nearest, preset, PRESETS } from "./kmeans.js";
 
 bootItem();
 
@@ -91,19 +91,16 @@ function restart(newSeed = true) {
   dirty = true;
 }
 
-/* Added dots join the current run: the centres stay put, and
-   the next move is an assign. */
+/* Added dots join the current run (see addToRun in kmeans.js):
+   a fresh start before the first move, else an assign next. */
 function addPoint(x, y) {
   if (points.length >= MAX_POINTS) { return; }
   points.push({ x: Math.max(0, Math.min(1, x)), y: Math.max(0, Math.min(1, y)) });
   state.preset = null;
   syncPresetButtons();
-  if (run.centres.length < state.k) { restart(false); return; }
-  const assign = new Int16Array(points.length).fill(-1);
-  assign.set(run.assign.subarray(0, Math.min(run.assign.length, points.length - 1)));
-  run.assign = assign;
-  run.phase = "assign";
-  run.done = false;
+  const before = run;
+  run = addToRun(run, points, state.k, state.seed);
+  if (run !== before) { lastMove = ""; setPlaying(false); }
   dirty = true;
 }
 

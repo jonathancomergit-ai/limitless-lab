@@ -9,7 +9,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
-  createRun, step, runToEnd, spread, sizes, elbow, preset, initCentres, nearest, mulberry32, PRESETS
+  createRun, addToRun, stacked, step, runToEnd, spread, sizes, elbow, preset, initCentres, nearest, mulberry32, PRESETS
 } from "../../items/k-means/kmeans.js";
 
 function farBlobs(seed = 3) {
@@ -122,4 +122,42 @@ test("presets are seeded and inside the square", () => {
     assert.ok(a.every((p) => p.x > 0 && p.x < 1 && p.y > 0 && p.y < 1));
   }
   assert.equal(nearest([{ x: 0, y: 0 }, { x: 1, y: 1 }], { x: 0.9, y: 0.8 }), 1);
+});
+
+/* Clear, then tap dots in one at a time, like main.js does. */
+function tapIn(pts, k, seed, run = createRun([], k, seed)) {
+  const points = run.points;
+  for (const p of pts) { points.push(p); run = addToRun(run, points, k, seed); }
+  return run;
+}
+
+test("after Clear, dots tapped in one at a time still fill all k groups", () => {
+  for (let seed = 1; seed <= 25; seed++) {
+    const run = runToEnd(tapIn(farBlobs(seed).pts, 3, seed));
+    assert.ok(run.done, `seed ${seed} never settled`);
+    assert.ok(!stacked(run.centres), `seed ${seed}: centres stacked`);
+    assert.ok(sizes(run).every((n) => n > 0), `seed ${seed}: empty group ${sizes(run)}`);
+  }
+});
+
+test("a Step on one dot, then more dots: the stacked centres start afresh", () => {
+  const { pts } = farBlobs(2);
+  const run0 = runToEnd(tapIn(pts.slice(0, 1), 3, 1));
+  assert.ok(stacked(run0.centres));
+  const run = runToEnd(tapIn(pts.slice(1), 3, 1, run0));
+  assert.ok(sizes(run).every((n) => n > 0), `empty group ${sizes(run)}`);
+});
+
+test("after the first move, an added dot keeps the centres and waits for an assign", () => {
+  const points = preset("blobs3");
+  const run = createRun(points, 3, 1);
+  step(run); step(run);
+  const centres = run.centres.map((c) => ({ ...c }));
+  points.push({ x: 0.5, y: 0.5 });
+  const same = addToRun(run, points, 3, 1);
+  assert.equal(same, run);
+  assert.deepEqual(run.centres, centres);
+  assert.equal(run.phase, "assign");
+  assert.equal(run.assign.length, points.length);
+  assert.equal(run.assign[points.length - 1], -1);
 });
