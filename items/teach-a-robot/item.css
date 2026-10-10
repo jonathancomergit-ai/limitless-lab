@@ -1,0 +1,126 @@
+/* ============================================================
+   Teach a Robot - layout
+
+   Phone: the square scene fills the width, controls stack under it.
+   Wide screens: scene on the left, controls in a column on the right.
+   ============================================================ */
+
+.tr-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The scene is square. Its canvas fills it (kit/canvas.js). */
+.tr-stage {
+  height: auto;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+}
+.tr-stage:focus-visible { outline-offset: -3px; }
+
+.tr-side {
+  display: grid;
+  gap: .85rem;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+  min-width: 0;
+}
+
+/* ---- button rows ------------------------------------------ */
+.tr-group {
+  display: grid;
+  gap: .5rem;
+  min-width: 0;
+}
+.tr-scenes { grid-template-columns: 1fr 1fr; }
+.tr-run    { grid-template-columns: 1.4fr 1fr 1fr; }
+.tr-tools  { grid-template-columns: 1fr 1fr; }
+.tr-decay  { grid-template-columns: auto minmax(0, 1fr); align-items: center; }
+
+.tr-side .btn,
+.tr-side .chip {
+  min-height: var(--tap);
+  padding-inline: .4rem;
+  min-width: 0;
+}
+.tr-side .chip { font-size: .72rem; letter-spacing: .04em; }
+
+/* Train and Watch light up while they run. */
+.tr-run .btn[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent); }
+
+.tr-label {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding-right: .2rem;
+}
+
+/* ---- the reward chart ------------------------------------- */
+.tr-card {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: .55rem .6rem .6rem;
+  min-width: 0;
+}
+.tr-card figcaption,
+.tr-note {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .25rem .5rem;
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin: 0 .2rem .35rem;
+}
+.tr-note { margin: .45rem .2rem 0; letter-spacing: .06em; }
+.tr-note output,
+.tr-avg { color: var(--text); letter-spacing: .04em; }
+.tr-box { position: relative; width: 100%; height: 110px; }
+.tr-box > canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---- sliders ---------------------------------------------- */
+.tr-sliders { display: grid; gap: .35rem; }
+.tr-slider {
+  display: grid;
+  gap: .1rem;
+  font-size: .9rem;
+  color: var(--text-dim);
+}
+.tr-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.tr-slider output { font-family: var(--font-mono); color: var(--text); }
+.tr-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.tr-try {
+  border-left: 3px solid var(--hot);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+/* ---- wide screens: side by side --------------------------- */
+@media (min-width: 880px) {
+  .tr-layout {
+    grid-template-columns: minmax(0, min(640px, calc(100svh - var(--bar-h) - 2.5rem))) minmax(320px, 400px);
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.25rem clamp(1rem, 3vw, 2rem) 0;
+  }
+  .tr-stage {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .tr-side { padding: 0; align-content: start; }
+}

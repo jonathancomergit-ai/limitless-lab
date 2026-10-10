@@ -171,7 +171,7 @@ Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bu
 
 Three more labs. Every one gets a "What's happening?" panel (4-6 bullets, plain words) and one "Try this" challenge.
 
-- [ ] `teach-a-robot` - Teach a Robot: Watch a little robot learn by trial and error until it can balance a pole or escape a maze all by itself. That's reinforcement learning.
+- [x] `teach-a-robot` - Teach a Robot: Watch a little robot learn by trial and error until it can balance a pole or escape a maze all by itself. That's reinforcement learning.
   - acceptance: Two scenes with a picker: Cart-pole (balance the pole) and Maze (find the goal)
   - acceptance: Q-learning in plain JS (items/teach-a-robot/rl.js): a table for the maze, binned states for cart-pole; sliders for learning rate, discount and exploration (with decay)
   - acceptance: Train fast (many episodes per frame, speed slider), Watch (real time), Reset; episode counter and a reward-per-episode chart
