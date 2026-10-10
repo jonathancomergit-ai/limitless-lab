@@ -1,0 +1,11 @@
+/* ============================================================
+   404 page - the button row under the message.
+   Everything else comes from kit/kit.css.
+   ============================================================ */
+
+.lost-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  margin-top: 1.6rem;
+}
