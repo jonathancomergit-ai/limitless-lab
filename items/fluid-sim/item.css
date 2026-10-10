@@ -1,0 +1,134 @@
+/* ============================================================
+   Fluid Sim - layout
+
+   The tank is the hero. Under it: Pause / Clear, the tools,
+   the ink colours, presets, the three sliders, then the two
+   view toggles. One column on a phone; wider screens spread
+   the sliders out.
+   ============================================================ */
+
+.fs-stage {
+  cursor: crosshair;
+  height: clamp(300px, min(60svh, 112vw), 720px);
+}
+.fs-stage.is-wall-tool { cursor: cell; }
+.fs-stage:focus-visible { outline-offset: -3px; }
+
+.fs-controls {
+  display: grid;
+  gap: .9rem;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 1rem clamp(1rem, 4vw, 1.25rem) 0;
+}
+
+.fs-group { display: grid; gap: .35rem; min-width: 0; }
+.fs-label {
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.fs-label span { color: var(--text); }
+
+/* ---- playback + tools + presets: rows of equal buttons ---- */
+.fs-row,
+.fs-seg,
+.fs-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .4rem; }
+.fs-row .btn,
+.fs-seg .btn,
+.fs-presets .btn { min-height: var(--tap); padding-inline: .4rem; min-width: 0; }
+.fs-presets .btn { font-size: .88rem; }
+.fs-seg .btn[aria-pressed="true"] {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.fs-presets .btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.fs-key {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--text-faint);
+  border: 1px solid var(--line-bright);
+  border-radius: 4px;
+  padding: 0 .3rem;
+  line-height: 1.4;
+}
+
+/* ---- ink colours: rainbow (wide) + 6 swatches, 4 a row on a phone ---- */
+.fs-inks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; }
+.fs-ink {
+  --c: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-height: var(--tap);
+  min-width: 0;
+  padding: 0 .4rem;
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: .88rem;
+  cursor: pointer;
+}
+.fs-ink:hover { border-color: var(--line-field); }
+.fs-ink[aria-pressed="true"] { border-color: var(--text); box-shadow: inset 0 0 0 1px var(--text); }
+.fs-ink i {
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  background: var(--c);
+  flex-shrink: 0;
+}
+.fs-ink.is-rainbow { grid-column: span 2; }
+.fs-ink.is-rainbow i {
+  background: conic-gradient(#FF2D78, #FFC93C, #3DF5A0, #35D6F5, #9B6BFF, #FF2D78);
+}
+.fs-ink.is-pink { --c: #FF2D78; }
+.fs-ink.is-cyan { --c: #35D6F5; }
+.fs-ink.is-amber { --c: #FFC93C; }
+.fs-ink.is-green { --c: #3DF5A0; }
+.fs-ink.is-violet { --c: #9B6BFF; }
+.fs-ink.is-white { --c: #ECEEF6; }
+
+/* ---- sliders ---------------------------------------------- */
+.fs-sliders { display: grid; gap: .25rem 1.5rem; }
+.fs-slider {
+  display: grid;
+  gap: .05rem;
+  font-size: .9rem;
+  color: var(--text-dim);
+  min-width: 0;
+}
+.fs-slider span { display: flex; justify-content: space-between; gap: .5rem; }
+.fs-slider output { font-family: var(--font-mono); color: var(--text); }
+.fs-slider input {
+  width: 100%;
+  height: var(--tap);
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ---- view toggles ----------------------------------------- */
+.fs-toggles { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.fs-toggle { min-height: var(--tap); font-size: .74rem; letter-spacing: .04em; justify-content: center; }
+
+.fs-try {
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: .7rem .9rem;
+  color: #C9CEE2;
+}
+
+@media (min-width: 640px) {
+  .fs-inks { grid-template-columns: 2fr repeat(6, minmax(0, 1fr)); }
+  .fs-ink.is-rainbow { grid-column: auto; }
+  .fs-sliders { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
