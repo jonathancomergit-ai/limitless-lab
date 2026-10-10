@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Predator & Prey - Limitless Lab</title>
+  <meta name="description" content="Rabbits eat grass, foxes eat rabbits. Watch the two populations boom and crash in waves, then try to make them live together.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Predator &amp; Prey</h1>
+  </header>
+
+  <main id="main">
+    <!-- ===================== THE FIELD + CHARTS (hero) ===================== -->
+    <div class="stage pp-stage" id="stage" tabindex="0" role="group"
+         aria-label="A field of grass with rabbits and foxes. Tap the field to drop animals. Keyboard: R drops rabbits, F drops foxes.">
+      <canvas role="img" aria-label="A green field with pale blue rabbits and orange foxes, a chart of grass, rabbits and foxes over time, and a rabbits-against-foxes plot that traces a loop."></canvas>
+      <div class="hud">
+        <div>Day <output id="day">0</output></div>
+        <div>Rabbits <output id="hud-rabbits">0</output> &middot; Foxes <output id="hud-foxes">0</output></div>
+      </div>
+    </div>
+
+    <!-- ===================== CONTROLS ===================== -->
+    <div class="pp-controls">
+      <ul class="pp-legend" aria-label="Counts right now">
+        <li><span class="pp-key is-grass" aria-hidden="true"></span>Grass <output id="n-grass">0%</output></li>
+        <li><span class="pp-key is-rabbit" aria-hidden="true"></span>Rabbits <output id="n-rabbits">0</output></li>
+        <li><span class="pp-key is-fox" aria-hidden="true"></span>Foxes <output id="n-foxes">0</output></li>
+      </ul>
+      <p class="pp-status" id="status" aria-live="polite">Both living</p>
+
+      <div class="pp-row" role="group" aria-label="Playback">
+        <button class="btn btn-primary" id="play" type="button" aria-pressed="true">Pause</button>
+        <button class="btn" id="restart" type="button">New run</button>
+        <button class="btn" id="speed" type="button" aria-label="Speed: 1 times">Speed 1&times;</button>
+      </div>
+
+      <div class="pp-row pp-row-2">
+        <div class="pp-drop" role="group" aria-label="Tapping the field drops">
+          <span class="pp-drop-label">Tap drops</span>
+          <button class="chip" id="drop-rabbit" type="button" aria-pressed="true">Rabbits</button>
+          <button class="chip" id="drop-fox" type="button" aria-pressed="false">Foxes</button>
+        </div>
+        <button class="chip pp-eq" id="equations" type="button" aria-pressed="false">Equations mode</button>
+      </div>
+      <p class="pp-hint" id="eq-hint">Equations mode draws the Lotka-Volterra maths as dashed lines, starting from today's numbers, so you can compare.</p>
+
+      <div class="pp-presets" role="group" aria-label="Presets">
+        <button class="btn btn-sm" type="button" data-preset="steady">Steady cycles</button>
+        <button class="btn btn-sm" type="button" data-preset="foxes-die">Foxes die out</button>
+        <button class="btn btn-sm" type="button" data-preset="crash">Everything crashes</button>
+      </div>
+
+      <div class="pp-sliders">
+        <label class="pp-slider is-rabbit">
+          <span><i aria-hidden="true"></i>Rabbit births <output id="rabbitBirth-out"></output></span>
+          <input type="range" id="rabbitBirth" min="1" max="50" step="1" value="15">
+        </label>
+        <label class="pp-slider is-fox">
+          <span><i aria-hidden="true"></i>Fox births <output id="foxBirth-out"></output></span>
+          <input type="range" id="foxBirth" min="1" max="30" step="1" value="4">
+        </label>
+        <label class="pp-slider is-rabbit">
+          <span><i aria-hidden="true"></i>Rabbit hunger limit <output id="rabbitHunger-out"></output></span>
+          <input type="range" id="rabbitHunger" min="3" max="40" step="1" value="10">
+        </label>
+        <label class="pp-slider is-fox">
+          <span><i aria-hidden="true"></i>Fox hunger limit <output id="foxHunger-out"></output></span>
+          <input type="range" id="foxHunger" min="3" max="60" step="1" value="10">
+        </label>
+        <label class="pp-slider is-grass">
+          <span><i aria-hidden="true"></i>Grass regrows in <output id="regrow-out"></output></span>
+          <input type="range" id="regrow" min="2" max="80" step="1" value="25">
+        </label>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Press <strong>Play</strong>. Rabbits eat the grass and multiply. Foxes chase the rabbits.</li>
+            <li>Watch the chart: rabbits <strong>boom</strong>, then foxes boom, then rabbits <strong>crash</strong>, then foxes crash. Again and again.</li>
+            <li>Try the three <strong>presets</strong>, then the sliders. Turn on <strong>Equations mode</strong> to compare with the maths.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Drop rabbits / foxes</td><td>Pick one, tap the field</td><td><kbd>R</kbd> / <kbd>F</kbd> (random spot)</td></tr>
+              <tr><td>Play / Pause</td><td>Play button</td><td><kbd>P</kbd></td></tr>
+              <tr><td>New run</td><td>Button</td><td><kbd>N</kbd></td></tr>
+              <tr><td>Speed 1&times; / 2&times; / 4&times;</td><td>Button</td><td><kbd>S</kbd></td></tr>
+              <tr><td>Equations mode</td><td>The toggle</td><td><kbd>E</kbd></td></tr>
+              <tr><td>Presets</td><td>Buttons</td><td><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></td></tr>
+              <tr><td>Sliders</td><td>Drag</td><td><kbd>Tab</kbd> + arrows</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>Lots of grass means lots of fed rabbits, so <strong>rabbits boom</strong>.</li>
+            <li>Lots of rabbits means easy meals, so <strong>foxes boom</strong>, a little later.</li>
+            <li>Now foxes eat rabbits faster than they're born. <strong>Rabbits crash.</strong></li>
+            <li>No rabbits, no food: foxes hit their <strong>hunger limit</strong> and starve. <strong>Foxes crash.</strong> The grass grows back, and it starts again.</li>
+            <li>The <strong>rabbits-vs-foxes plot</strong> turns those waves into a loop. Each trip round is one cycle.</li>
+            <li><strong>Equations mode</strong> shows the Lotka-Volterra equations (1920s). They have no grass, no space and no bad luck, so their loop never dies out. Real animals can.</li>
+          </ul>
+          <p class="pp-try"><strong>Try this:</strong> start from <strong>Everything crashes</strong>. Can you change just one slider so rabbits and foxes live together for 1,000 days? Which slider did it, and why does it help?</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+        <a href="https://jonjoe1001.dev/privacy.html#limitless">Privacy</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>

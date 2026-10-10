@@ -195,7 +195,7 @@ Three more labs. Every one gets a "What's happening?" panel (4-6 bullets, plain 
   - acceptance: Unit test (tests/unit): after projection the divergence is near zero; advection keeps total dye within 1% with fade off
   - acceptance: smoke.js: drag across the stage, check dye and speed went up
 
-- [ ] `predator-prey` - Predator & Prey: Rabbits eat grass, foxes eat rabbits. Watch the two populations boom and crash in waves, then try to make them live together.
+- [x] `predator-prey` - Predator & Prey: Rabbits eat grass, foxes eat rabbits. Watch the two populations boom and crash in waves, then try to make them live together.
   - acceptance: Agents on a canvas: grass regrows, rabbits wander, eat and breed, foxes hunt, eat, breed and starve
   - acceptance: Live population chart (grass, rabbits, foxes) and a rabbits-vs-foxes plot that traces the loop
   - acceptance: Sliders: birth rates, hunger limits, grass regrowth; tap to drop rabbits or foxes
