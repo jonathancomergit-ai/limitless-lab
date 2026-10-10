@@ -19,7 +19,7 @@ import { pointer } from "../../kit/input.js";
 import { createSave } from "../../kit/save.js";
 import { mountSavePanel } from "../../kit/save-ui.js";
 import {
-  traceAll, shapeOf, focalLength, hitTest, scene, wavelengthRGB,
+  traceAll, shapeOf, focalLength, hitTest, scene, wavelengthRGB, stretchAngle, isScene,
   PIECES, PIECE_NAMES, SOURCES, SCENES
 } from "./optics.js";
 
@@ -92,13 +92,21 @@ function worldFor(w, h) {
   return { w: w / scale, h: h / scale, scale };
 }
 
-/* A new screen size: stretch the layout to the new world, so
-   nothing ends up off the edge. */
+/* A new screen size. An untouched scene is rebuilt for the new
+   shape, so its aims stay exact. Anything else stretches to the
+   new world (nothing ends up off the edge), and each angle turns
+   with the stretch so beams still point where they did. */
 function fitWorld() {
   const next = worldFor(view.width, view.height);
   if (Math.abs(next.w - world.w) > 0.5 || Math.abs(next.h - world.h) > 0.5) {
-    const sx = next.w / world.w, sy = next.h / world.h;
-    for (const p of [source, ...pieces]) { p.x *= sx; p.y *= sy; }
+    if (isScene(state.scene, world.w, world.h, source, pieces)) {
+      const s = scene(state.scene, next.w, next.h);
+      source = { ...s.source, size: 1 };
+      pieces = s.pieces.map((p) => ({ ...p }));
+    } else {
+      const sx = next.w / world.w, sy = next.h / world.h;
+      for (const p of [source, ...pieces]) { p.x *= sx; p.y *= sy; p.angle = stretchAngle(p.angle, sx, sy); }
+    }
   }
   world = next;
 }
@@ -579,9 +587,11 @@ for (const b of document.querySelectorAll("[data-scene]")) { b.addEventListener(
 /* Load a whole save (start, import, delete). */
 function apply(d) {
   const ok = validate(d) === true ? d : structuredClone(DEFAULTS);
-  if (!ok.layout) { loadScene(ok.scene); return; }
-  const sx = world.w / ok.layout.w, sy = world.h / ok.layout.h;
-  const place = (p) => ({ ...p, x: p.x * sx, y: p.y * sy, size: 1 });
+  const l = ok.layout;
+  /* An untouched scene: rebuild it for this screen (see fitWorld). */
+  if (!l || isScene(ok.scene, l.w, l.h, { ...l.source, type: l.source.light }, l.pieces)) { loadScene(ok.scene); return; }
+  const sx = world.w / l.w, sy = world.h / l.h;
+  const place = (p) => ({ ...p, x: p.x * sx, y: p.y * sy, angle: stretchAngle(p.angle, sx, sy), size: 1 });
   source = { ...place(ok.layout.source), type: ok.layout.source.light };
   pieces = ok.layout.pieces.map(place);
   state.scene = ok.scene;

@@ -11,7 +11,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   refract, reflect, criticalAngle, indexOf, traceRay, traceAll, focalLength, shapeOf, hitTest,
-  scene, wavelengthRGB, sourceRays, SCENES, PIECES, WHITE
+  scene, wavelengthRGB, sourceRays, stretchAngle, isScene, SCENES, PIECES, WHITE
 } from "../../items/light-lenses/optics.js";
 
 const rad = (d) => (d * Math.PI) / 180;
@@ -159,4 +159,32 @@ test("wavelength colours: violet is blue-ish, red is red", () => {
   const [r2, g2, b2] = wavelengthRGB(650);
   assert.ok(b1 > r1);
   assert.ok(r2 > g2 && r2 > b2);
+});
+
+test("a new screen shape: angles turn with the stretch, so aims still land", () => {
+  /* An arrow from A to B still points at B after both are stretched. */
+  const A = { x: 100, y: 200 }, B = { x: 700, y: 350 };
+  for (const [sx, sy] of [[0.46, 2.16], [2.16, 0.46], [1, 1], [0.8, 1.3]]) {
+    const a = stretchAngle(Math.atan2(B.y - A.y, B.x - A.x), sx, sy);
+    near(a, Math.atan2((B.y - A.y) * sy, (B.x - A.x) * sx), 1e-12, `${sx}x${sy}`);
+  }
+  near(stretchAngle(rad(90), 0.5, 2), rad(90), 1e-12);
+  near(stretchAngle(rad(180), 0.5, 2), rad(180), 1e-12);
+});
+
+test("an untouched scene is spotted (even rounded, as saved), an edited one is not", () => {
+  const r2 = (v) => Math.round(v * 100) / 100;
+  for (const name of SCENES) {
+    for (const [w, h] of [[1376, 600], [600, 862]]) {
+      const s = scene(name, w, h);
+      const saved = (p) => ({ type: p.type, x: r2(p.x), y: r2(p.y), angle: r2(p.angle) });
+      assert.ok(isScene(name, w, h, saved(s.source), s.pieces.map(saved)), `${name} ${w}x${h}`);
+      const moved = s.pieces.map(saved);
+      moved[0].x += 6;
+      assert.ok(!isScene(name, w, h, saved(s.source), moved), `${name} ${w}x${h}: moved`);
+      const turned = { ...saved(s.source), angle: s.source.angle + 0.1 };
+      assert.ok(!isScene(name, w, h, turned, s.pieces.map(saved)), `${name} ${w}x${h}: turned`);
+    }
+    assert.ok(!isScene(name, 1376, 600, scene(name, 1376, 600).source, []), `${name}: pieces removed`);
+  }
 });

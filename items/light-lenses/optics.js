@@ -338,3 +338,19 @@ export function scene(name, w, h) {
     }
   }
 }
+
+/* ---- a new screen shape ------------------------------------ */
+/* A direction after stretching x by sx and y by sy: the arrow
+   still points at the same (stretched) spot. */
+export function stretchAngle(angle, sx, sy) {
+  return Math.atan2(Math.sin(angle) * sy, Math.cos(angle) * sx);
+}
+
+/* Is this layout still scene `name`, untouched, for a w x h world
+   (to the 2 decimals a save keeps)? Then it can be rebuilt for a
+   new screen shape, which keeps every aim exact. */
+export function isScene(name, w, h, source, pieces) {
+  const s = scene(name, w, h);
+  const same = (a, b) => a.type === b.type && Math.abs(a.x - b.x) < 0.02 && Math.abs(a.y - b.y) < 0.02 && Math.abs(a.angle - b.angle) < 0.02;
+  return same(s.source, source) && s.pieces.length === pieces.length && s.pieces.every((p, k) => same(p, pieces[k]));
+}
