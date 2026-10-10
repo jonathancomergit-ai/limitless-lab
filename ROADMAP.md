@@ -167,6 +167,45 @@ Six more labs, in this order. Every one gets a "What's happening?" panel (4-6 bu
   - acceptance: Unit test (tests/unit): every algorithm sorts random, sorted, reversed and duplicate arrays correctly
   - acceptance: smoke.js: press Race, check the compare counter went up
 
+### Batch 4
+
+Three more labs. Every one gets a "What's happening?" panel (4-6 bullets, plain words) and one "Try this" challenge.
+
+- [ ] `teach-a-robot` - Teach a Robot: Watch a little robot learn by trial and error until it can balance a pole or escape a maze all by itself. That's reinforcement learning.
+  - acceptance: Two scenes with a picker: Cart-pole (balance the pole) and Maze (find the goal)
+  - acceptance: Q-learning in plain JS (items/teach-a-robot/rl.js): a table for the maze, binned states for cart-pole; sliders for learning rate, discount and exploration (with decay)
+  - acceptance: Train fast (many episodes per frame, speed slider), Watch (real time), Reset; episode counter and a reward-per-episode chart
+  - acceptance: Maze: tap cells to add walls and pits; shows the learned best arrow in each cell and a value heatmap
+  - acceptance: Cart-pole uses the standard equations with a fixed time step
+  - acceptance: "Try this": set exploration to 0 and watch it get stuck; links to Neural Net Playground and Gradient Descent Hill
+  - acceptance: Saves settings and the maze; Export/Import works
+  - acceptance: Reduced motion: starts paused
+  - acceptance: Unit test (tests/unit): Q-learning on a small maze finds the shortest path, one cart-pole step matches hand-worked values
+  - acceptance: smoke.js: press Train on the maze, check episodes went up and average reward improved
+
+- [ ] `fluid-sim` - Fluid Sim: Stir smoke and ink with your finger and watch it swirl, curl and mix. Real fluid equations, running live in your browser.
+  - acceptance: Stable-fluids solver on a grid in plain JS (items/fluid-sim/fluid.js): advection, diffusion, pressure projection, vorticity; smaller grid on phones
+  - acceptance: Drag to push fluid and add dye (touch + mouse; several fingers make several streams); colour picker and rainbow mode
+  - acceptance: Sliders: viscosity, dye fade, swirl; toggles: velocity arrows, pressure view
+  - acceptance: Draw walls the fluid flows around; Clear
+  - acceptance: Presets: two jets colliding, rising smoke, wind past a ball
+  - acceptance: Canvas 2D; keeps 30 fps or better on a mid-range phone at default settings
+  - acceptance: Saves settings; Export/Import works
+  - acceptance: Reduced motion: starts paused, slower default
+  - acceptance: Unit test (tests/unit): after projection the divergence is near zero; advection keeps total dye within 1% with fade off
+  - acceptance: smoke.js: drag across the stage, check dye and speed went up
+
+- [ ] `predator-prey` - Predator & Prey: Rabbits eat grass, foxes eat rabbits. Watch the two populations boom and crash in waves, then try to make them live together.
+  - acceptance: Agents on a canvas: grass regrows, rabbits wander, eat and breed, foxes hunt, eat, breed and starve
+  - acceptance: Live population chart (grass, rabbits, foxes) and a rabbits-vs-foxes plot that traces the loop
+  - acceptance: Sliders: birth rates, hunger limits, grass regrowth; tap to drop rabbits or foxes
+  - acceptance: Equations mode: Lotka-Volterra curves with matching settings, beside the agents, to compare
+  - acceptance: Presets: steady cycles, foxes die out, everything crashes
+  - acceptance: Saves settings; Export/Import works
+  - acceptance: Reduced motion: starts paused
+  - acceptance: Unit test (tests/unit): the Lotka-Volterra integrator keeps its conserved quantity within 1% over 10 cycles; a fox with no food starves at its hunger limit
+  - acceptance: smoke.js: press Play, check time advanced and the populations changed
+
 ## Ideas (not ready yet)
 
 - (add more here)

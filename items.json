@@ -152,5 +152,38 @@
     ],
     "added": "2026-10-09",
     "thumb": "thumb.webp"
+  },
+  {
+    "slug": "teach-a-robot",
+    "title": "Teach a Robot",
+    "blurb": "Watch a little robot learn by trial and error until it can balance a pole or escape a maze all by itself. That's reinforcement learning.",
+    "tags": [
+      "machine learning",
+      "algorithms"
+    ],
+    "added": "2026-10-10",
+    "soon": true
+  },
+  {
+    "slug": "fluid-sim",
+    "title": "Fluid Sim",
+    "blurb": "Stir smoke and ink with your finger and watch it swirl, curl and mix. Real fluid equations, running live in your browser.",
+    "tags": [
+      "physics",
+      "simulation"
+    ],
+    "added": "2026-10-10",
+    "soon": true
+  },
+  {
+    "slug": "predator-prey",
+    "title": "Predator & Prey",
+    "blurb": "Rabbits eat grass, foxes eat rabbits. Watch the two populations boom and crash in waves, then try to make them live together.",
+    "tags": [
+      "biology",
+      "emergence"
+    ],
+    "added": "2026-10-10",
+    "soon": true
   }
 ]
