@@ -105,6 +105,26 @@ export function step(run) {
   return run;
 }
 
+/* Two centres on the same spot. k-means++ does this when there
+   are fewer different dots than k. Ties go to the lowest index,
+   so the stacked ones would never get any dots. */
+export function stacked(centres) {
+  return centres.some((c, j) => centres.some((o, i) => i < j && d2(c, o) < 1e-12));
+}
+
+/* A dot was just pushed onto `points`. Before the first move, or
+   while centres are stacked, start afresh so k-means++ sees every
+   dot. Otherwise the centres stay put and the next move is an assign. */
+export function addToRun(run, points, k, seed = 1) {
+  if (run.centres.length < k || run.steps === 0 || stacked(run.centres)) { return createRun(points, k, seed); }
+  const assign = new Int16Array(points.length).fill(-1);
+  assign.set(run.assign.subarray(0, Math.min(run.assign.length, points.length - 1)));
+  run.assign = assign;
+  run.phase = "assign";
+  run.done = false;
+  return run;
+}
+
 /* Keep stepping until it settles (or max moves). */
 export function runToEnd(run, max = 400) {
   for (let s = 0; s < max && !run.done; s++) { step(run); }
