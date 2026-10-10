@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Do not edit this line. It's the privacy lock, and the tests check it. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; connect-src 'self' https://jonjoe1001.goatcounter.com; img-src 'self' data: blob: https://jonjoe1001.goatcounter.com; style-src 'self'; font-src 'self'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Teach a Robot - Limitless Lab</title>
+  <meta name="description" content="Watch a little robot learn by trial and error until it can balance a pole or escape a maze all by itself. That's reinforcement learning.">
+  <meta name="theme-color" content="#07070C">
+
+  <link rel="icon" href="../../kit/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../kit/kit.css">
+  <link rel="stylesheet" href="item.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="item-bar">
+    <a class="back-link" href="../../"><span aria-hidden="true">&larr;</span> <span data-slot="wing-name">Hub</span></a>
+    <h1>Teach a Robot</h1>
+  </header>
+
+  <main id="main">
+    <div class="tr-layout">
+      <!-- ===================== THE SCENE (hero) ===================== -->
+      <div class="stage tr-stage" id="stage" tabindex="0" role="group"
+           aria-label="The robot's world. Maze: tap a square to add a wall, tap again for a pit. Keyboard: arrow keys move the cursor, Enter changes the square. Cart-pole: tap beside the pole to poke it, or use the arrow keys.">
+        <canvas role="img" id="scene-canvas" aria-label="A grid maze. Brighter squares are where the robot expects more reward, and arrows show its best move from each square."></canvas>
+        <div class="hud">
+          <div>Run <output id="episode">0</output></div>
+          <div><span id="score-label">Reward</span> <output id="score">-</output></div>
+        </div>
+        <p class="stage-msg" id="msg" hidden>Press Train</p>
+      </div>
+
+      <!-- ===================== CONTROLS ===================== -->
+      <div class="tr-side">
+        <div class="tr-group tr-scenes" role="group" aria-label="Scene">
+          <button class="chip" type="button" data-scene="maze" aria-pressed="true">Maze</button>
+          <button class="chip" type="button" data-scene="cart" aria-pressed="false">Cart-pole</button>
+        </div>
+
+        <div class="tr-group tr-run" role="group" aria-label="Training">
+          <button class="btn btn-primary" id="train" type="button" aria-pressed="false">Train</button>
+          <button class="btn" id="watch" type="button" aria-pressed="false">Watch</button>
+          <button class="btn" id="reset" type="button">Reset</button>
+        </div>
+
+        <div class="tr-group tr-tools" id="maze-tools" role="group" aria-label="Maze">
+          <button class="btn" id="clear-maze" type="button">Clear maze</button>
+          <button class="btn" id="default-maze" type="button">First maze</button>
+        </div>
+        <div class="tr-group tr-tools" id="cart-tools" role="group" aria-label="Poke the pole" hidden>
+          <button class="btn" id="poke-left" type="button">&larr; Poke</button>
+          <button class="btn" id="poke-right" type="button">Poke &rarr;</button>
+        </div>
+
+        <figure class="tr-card">
+          <figcaption>Reward per run <output id="avg" class="tr-avg"></output></figcaption>
+          <div class="tr-box" id="chart-box">
+            <canvas role="img" aria-label="A line chart of the total reward in each practice run. Going up means the robot is learning."></canvas>
+          </div>
+          <p class="tr-note"><span>Exploring <output id="eps-now">-</output></span> <span id="brain-note"></span></p>
+        </figure>
+
+        <div class="tr-sliders">
+          <label class="tr-slider">
+            <span>Speed <output id="speed-out">1 run / frame</output></span>
+            <input type="range" id="speed" min="0" max="8" step="1" value="0">
+          </label>
+          <label class="tr-slider">
+            <span>Learning rate &alpha; <output id="lr-out">0.50</output></span>
+            <input type="range" id="lr" min="1" max="100" step="1" value="50">
+          </label>
+          <label class="tr-slider">
+            <span>Discount &gamma; <output id="discount-out">0.95</output></span>
+            <input type="range" id="discount" min="0" max="8" step="1" value="4">
+          </label>
+          <label class="tr-slider">
+            <span>Exploration &epsilon; <output id="explore-out">1.00</output></span>
+            <input type="range" id="explore" min="0" max="20" step="1" value="20">
+          </label>
+        </div>
+
+        <div class="tr-group tr-decay" role="group" aria-label="Exploration decay">
+          <span class="tr-label">Exploration</span>
+          <button class="chip" type="button" id="decay" aria-pressed="true">Fades over time</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== HOW TO + WHAT'S HAPPENING ===================== -->
+    <div class="wrap item-info">
+      <div>
+        <section id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How to play</h2>
+          <ol>
+            <li>Pick <strong>Maze</strong> or <strong>Cart-pole</strong>.</li>
+            <li>Press <strong>Train</strong>. The robot practises over and over, fast. Watch the reward chart climb.</li>
+            <li>In the maze, tap squares to add <strong>walls</strong> and <strong>pits</strong>. Can it still find the way?</li>
+            <li>Press <strong>Watch</strong> to see it practise in real time, one move at a time.</li>
+          </ol>
+          <table class="controls">
+            <thead><tr><th scope="col">Do this</th><th scope="col">Phone</th><th scope="col">Keyboard</th></tr></thead>
+            <tbody>
+              <tr><td>Train fast / stop</td><td>Train</td><td><kbd>T</kbd></td></tr>
+              <tr><td>Watch real time / stop</td><td>Watch</td><td><kbd>W</kbd></td></tr>
+              <tr><td>Pause / go on</td><td>Train or Watch</td><td><kbd>P</kbd></td></tr>
+              <tr><td>Forget everything</td><td>Reset</td><td><kbd>R</kbd></td></tr>
+              <tr><td>Wall, pit, empty</td><td>Tap a square (again to change)</td><td>Arrows, then <kbd>Enter</kbd> (on the maze)</td></tr>
+              <tr><td>Poke the pole</td><td>Tap beside it, or &larr; Poke / Poke &rarr;</td><td><kbd>&larr;</kbd> <kbd>&rarr;</kbd> (on the stage)</td></tr>
+              <tr><td>Scene</td><td>Maze / Cart-pole</td><td><kbd>1</kbd> <kbd>2</kbd></td></tr>
+              <tr><td>Speed</td><td>Slider</td><td><kbd>[</kbd> <kbd>]</kbd></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="what" aria-labelledby="what-title">
+          <h2 id="what-title">What's happening?</h2>
+          <ul>
+            <li>Nobody tells the robot what to do. It only gets a <strong>reward</strong>: +20 for the goal, -20 for a pit, -1 for every move. On the cart: +1 for every step the pole stays up, -100 when it falls.</li>
+            <li>It keeps a big table of guesses, called <strong>Q</strong>: "if I'm here and do this, how much reward will I get in the end?" At first every guess is 0.</li>
+            <li>After each move it nudges one guess towards <strong>reward now + &gamma; &times; the best guess from where it landed</strong>. That's <strong>Q-learning</strong>. The <strong>learning rate &alpha;</strong> is how big the nudge is.</li>
+            <li>The <strong>discount &gamma;</strong> says how much future reward counts. Near 1: plan far ahead. Near 0: only care about right now.</li>
+            <li><strong>Exploration &epsilon;</strong> is the chance it tries a random move instead of its best guess. It needs some, or it never finds out there's something better. Fading it lets it explore early and show off later.</li>
+            <li>In the maze, brighter squares are worth more and the arrows are its best guess. Good news spreads back from the goal one square at a time.</li>
+            <li>The cart-pole has too many exact states for a table, so each number (where, how fast, angle, spin) is sorted into a few <strong>bins</strong>. 864 boxes in all.</li>
+            <li>This is <strong>reinforcement learning</strong>, the same idea that taught computers to play Go and robots to walk. Big ones swap the table for a neural network, like the one in the <a href="../neural-playground/">Neural Net Playground</a>, trained by sliding downhill as in <a href="../gradient-descent/">Gradient Descent Hill</a>.</li>
+          </ul>
+          <p class="tr-try"><strong>Try this:</strong> pick <strong>Cart-pole</strong>, set <strong>Exploration</strong> to 0 and press Reset, then Train. It only ever does what it already thinks is best, so it gets stuck. Now slide Exploration back up and Reset. How long can it balance now?</p>
+        </section>
+      </div>
+
+      <div id="save-panel"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="privacy-note">
+        <strong>No accounts, no cookies.</strong> Saves stay on your device.
+        Cookie-free visit counts via GoatCounter.
+        <a href="https://jonjoe1001.dev/privacy.html#limitless">Privacy</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="../../kit/stats.js" defer></script>
+</body>
+</html>
